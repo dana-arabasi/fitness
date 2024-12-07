@@ -19,12 +19,12 @@
 @tag
 Feature: Instructor Features
   As an instructor
-  I want to manage programs, interact with clients, track their progress, and send notifications
-  So that I can provide a high-quality experience and keep clients engaged with the programs
+  I want to create, update, or delete fitness programs
+  So that I can manage my program offerings effectively
   
    Background:
     Given I am logged in as an instructor
-    And I am on the Instructor Dashboard
+   
 
   @tag1
    Scenario: Instructor creates a fitness program with all required details and media
@@ -244,18 +244,18 @@ Feature: Instructor Features
    	Scenario: 	Instructor selects a program that doesn't exist anymore
     Given: The instructor has a program listed.
     And the instructor is on the program management page
-    And: The program is deleted by another system process (for example, by an admin or automated system).
-    When: The instructor tries to select and delete the program.
-    Then: The system should inform the instructor that the program no longer exists and cannot be deleted.
+    And The program is deleted by another system process (for example, by an admin).
+    When The instructor tries to select and delete the program.
+    Then The system should inform the instructor that the program no longer exists and cannot be deleted.
     
    @tag25
    Scenario: Instructor cancels the deletion
-	 Given: The instructor has an existing program.
-	 And: The instructor is on the program management page.
-	 When: The instructor selects the program to delete.
-	 And: The instructor cancels the deletion process before confirming.
-	 Then: The program should remain intact.
-	 And: No confirmation message should be shown.
+	 Given The instructor has an existing program.
+	 And The instructor is on the program management page.
+	 When The instructor selects the program to delete.
+	 And The instructor cancels the deletion process before confirming.
+	 Then The program should remain intact.
+	 And No confirmation message should be shown.
 	 
 	 
    
