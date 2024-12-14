@@ -5,7 +5,7 @@ import io.cucumber.junit.CucumberOptions;
 import io.cucumber.junit.CucumberOptions.SnippetType; 
 
 @RunWith(Cucumber .class)
-@CucumberOptions(features="use_cases/ProgramManagement.feature",
+@CucumberOptions(features="use_cases/CreateProgram.feature",
 plugin= {"html:target/cucumber/wikipedia.html"},
 monochrome=true,
 snippets=SnippetType.CAMELCASE,

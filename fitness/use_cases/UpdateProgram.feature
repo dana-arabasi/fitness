@@ -17,104 +17,14 @@
 ## (Comments)
 #Sample Feature Definition Template
 @tag
-Feature: Instructor Features
+Feature: Update Program
   As an instructor
-  I want to create, update, or delete fitness programs
+  I want to  update fitness programs
   So that I can manage my program offerings effectively
   
    Background:
     Given I am logged in as an instructor
    
-
-  @tag1
-   Scenario: Instructor creates a fitness program with all required details and media
-    Given the instructor is on the program management page
-    When the instructor enters the program title, duration, difficulty level, and goals
-    And the instructor uploads video tutorials, images, or documents
-    And the instructor sets a price for the program if applicable
-    And the instructor sets the schedule for group sessions
-    Then the program should be created successfully
-    And the instructor should see a confirmation message "Program created successfully"
-    And the program should appear in the program list
-    
-   @tag2
-     Scenario: Instructor creates a fitness program without a price
-     Given the instructor is on the program management page
-     When the instructor enters the program title, duration, difficulty level, and goals
-     And the instructor uploads video tutorials, images, or documents
-     And the instructor sets the schedule for group sessions
-     And the instructor does not set a price
-     Then the program should be created successfully without a price
-     And the instructor should see a confirmation message "Program created successfully"
-     And the program should appear in the program list
-     
-   @tag3
-    Scenario: Instructor creates a fitness program without video, image, or document
-    Given the instructor is on the program management page
-    When the instructor does not upload any media
-    And the instructor try to create this fitness program
-    Then the instructor should see an error message "At least one media file (video, image, or document) is required"
-    And the program should not be created
-    
-   @tag4
-   Scenario: Instructor creates a fitness program with a missing title
-    Given the instructor is on the program management page
-    When the instructor does not enter a program title
-    And the instructor try to create a fitness program
-    Then the instructor should see an error message "Program title is required"
-    And the program should not be created
-
-    
-  @tag5 
-    Scenario: Instructor creates a fitness program with a missing duration
-    Given the instructor is on the program management page
-    When the instructor does not enter a program duration
-    And the instructor try to create this fitness program
-    Then the instructor should see an error message "Program duration is required"
-    And the program should not be created
- 
- 
-  @tag6 
-   Scenario: Instructor creates a fitness program with a missing difficulty level
-     Given the instructor is on the program management page
-    When the instructor does not select a difficulty level
-      And the instructor try to create this fitness program
-    Then the instructor should see an error message "Program difficulty level is required"
-    And the program should not be created
-    
-   @tag7
-   Scenario: Instructor creates a fitness program with missing goals
-    Given the instructor is on the program management page
-    When the instructor does not enter goals for the program
-    And the instructor try to create this fitness program
-    Then the instructor should see an error message "Program goals are required"
-    And the program should not be created
-    
-    @tag8
-    Scenario: Invalid file type for media
-    Given the instructor is on the program management page
-    When the instructor uploads an invalid file type "invalid_file.exe"
-    And the instructor try to create this fitness program
-    Then the instructor should see an error message "Invalid file format"
-    And the program should not be created
-    
-    @tag9
-    Scenario: Price not set (if applicable)
-    Given the instructor is on the program management page
-    When the instructor does not set a price for the program
-    And the instructor try to create this fitness program
-    Then the instructor should see an error message "Program price is required"
-    And the program should not be created
-    
-    @tag10
-    Scenario: Program creation without group sessions
-    Given the instructor is on the program management page
-    When the instructor sets all required details (title, duration, difficulty level, goals, media)
-    And the instructor does not set a schedule for group sessions
-    Then the program should be created successfully without group sessions
-    And the instructor should see a confirmation message "Program created successfully"
-    And the program should appear in the program list without any group sessions scheduled
-    
   @tag11
    Scenario: Instructor updates a fitness program
      Given the instructor has an existing program
@@ -226,36 +136,7 @@ Feature: Instructor Features
   	  Given the instructor has an existing program
   	 	And the instructor is on the program management page 
     	When the instructor selects the program to edit
-    	And the instructor updates the price to "-$100"
+    	And the instructor updates the price to "$"-100
     	And the instructor saves the changes
     	Then the system should show an error message "Price must be a valid positive amount"
     	And the program should not be updated 
-    	
-   @tag23
-     Scenario: Instructor deletes a fitness program
-     Given the instructor has an existing program
-     And the instructor is on the program management page
-     When the instructor selects the program to delete
-     And the instructor confirms the deletion
-     Then the program should be deleted successfully
-     And the instructor should see a confirmation message 
-     
-   @tag24
-   	Scenario: 	Instructor selects a program that doesn't exist anymore
-    Given: The instructor has a program listed.
-    And the instructor is on the program management page
-    And The program is deleted by another system process (for example, by an admin).
-    When The instructor tries to select and delete the program.
-    Then The system should inform the instructor that the program no longer exists and cannot be deleted.
-    
-   @tag25
-   Scenario: Instructor cancels the deletion
-	 Given The instructor has an existing program.
-	 And The instructor is on the program management page.
-	 When The instructor selects the program to delete.
-	 And The instructor cancels the deletion process before confirming.
-	 Then The program should remain intact.
-	 And No confirmation message should be shown.
-	 
-	 
-   

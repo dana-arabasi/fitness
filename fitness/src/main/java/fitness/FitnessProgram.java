@@ -1,5 +1,8 @@
 package fitness;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class FitnessProgram {
 	private String title;
 	private int duration;
@@ -12,6 +15,8 @@ public class FitnessProgram {
 	private String sessionDate;
 	private String sessionDescription;
 	private String sessionTime;
+	private int isProgramCreated;
+	private boolean isInTheList;
 	
  
 	public FitnessProgram() {
@@ -22,10 +27,12 @@ public class FitnessProgram {
 		 video="";
 		 image="";
 		 document="";
-		 price=0;
+		 price=0.0;
 		 sessionDate="";
 		 sessionDescription="";
 		 sessionTime="";
+		 isProgramCreated=0;
+		 isInTheList=false;
 	} 
 	public void enterProgramTitle(String title) {
 	 
@@ -128,8 +135,55 @@ public class FitnessProgram {
 		   return true;	 
 		
 	}
+	public boolean isProgramCreated() {
+		if(this.isProgramCreated==1)
+			return true;
+		else
+		return false;
+	}
+	public void setInTheList() {
+		this.isInTheList=true;
+		
+	}
+	public boolean isInProgramList() {
+		if(this.isInTheList)
+			return true;
+		else
+		return false;
+	}
+	public void createProgram() {
+		this.isProgramCreated=1;
+		
+	}
+	public boolean validateProgramDetails() {
+		if(isTitleFill()&&isDurationFill()&&isDifficultyLevelFill()&&isGoalsFill()&&(isUploadVideo()||isUploadImage()||isUploadDocument()))
+		return true;
+		else 
+			return false;
+	}
+	public void notCreateProgram() {
+		this.isProgramCreated=0;
+		
+	}
+	public boolean uploadFile(String invalidFilePath) {
+		 String fileExtension = getFileExtension(invalidFilePath);
+	        List<String> allowedFileTypes = Arrays.asList("mp4", "jpg", "png", "pdf");
+	        if (allowedFileTypes.contains(fileExtension.toLowerCase())) {
+	            // Simulate successful upload
+	            return true;
+	        } else {
+	          
+	            return false;
+	        }
+	}
 	
-	
+	  private String getFileExtension(String filePath) {
+	        int lastDotIndex = filePath.lastIndexOf(".");
+	        if (lastDotIndex == -1 || lastDotIndex == filePath.length() - 1) {
+	            return ""; // No extension found
+	        }
+	        return filePath.substring(lastDotIndex + 1);
+	    }
 	
 
 }
