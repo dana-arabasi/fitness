@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -21,18 +22,23 @@ public class MyApp {
 	private static final String FILE_ADMIN = "files/admin.txt";
 	private static final String FILE_CLIENT = "files/clients.txt";
 	private static final String FILE_INSTRUCTOR = "files/instructors.txt";
-	
+	private static final String FILE_InstructorReg= "files/instructorsreg.txt";
+    private static final String  loginHistoryFile= "files/login.txt";
+    private String filePath = "";
 	private boolean isUserLoggedIn;
+	 public boolean isSignedUp;
 	private boolean AdminLoggedIn;
 	public ArrayList<Admin> admin;
 	public ArrayList<Instructor>instructors;
+	public ArrayList<Instructor> instructorsreg;
 	public ArrayList<Client>clients;
 	private String loggedName;
 	private String loggedPassword;
 	private String ROLE;
 	private boolean UserLoggedIn;
 	private boolean userDashOpen;
-	
+	public ArrayList<String> activeprograms;
+    public ArrayList<String> compprograms;
 	public boolean InstructorLoggedIn;
 	private String currentPage;
 	private boolean clientLoggedIn;
@@ -51,13 +57,29 @@ public class MyApp {
 	private boolean messageSentToInstructor;
 	private String lastResponse;
 	private ArrayList<String> instructormessageHistory;
-
-	
+	public boolean userManagementPageOpen;
+    public boolean isUserListVisible;
+    public boolean adminDashbordOpen;
+    public boolean isSigndUp;
+    public boolean addedSuccessfully;
+    public boolean updatedSuccessfully;
+    public boolean deletedSuccessfully;
+    public boolean reportGenerated;
+    public boolean discountMessagepos;
+    public boolean messageSentToSupplier;
+    public boolean contentManagementPageOpen;
+    public boolean reportShown;
+    public ContentManagement contentmanagement;
+	private boolean ClientLoggedIn;
+	private boolean isInstructorListVisible;
+	private int totalLogins=0;
+	private int loginCount=0;
 	
 	   public MyApp() throws FileNotFoundException, IOException {
 	        super();
 	        this.client = new Client();
 	        this.client.setApp(this);
+	        contentmanagement = new ContentManagement();
 	        this. usermessageHistory = new ArrayList<>();
 	        this.clients = new ArrayList<>();
 	        this.instructors = new ArrayList<>();
@@ -66,7 +88,10 @@ public class MyApp {
 	        this.clientProfiles= new HashMap<>();
 	        this.userNotifications = new HashMap<>();
 	        this.instructormessageHistory=new ArrayList<>();
-
+	        this.instructorsreg= new ArrayList<>();
+	        this.activeprograms=new ArrayList<>();
+	        this.compprograms=new ArrayList<>();
+	        
 	        loadData(FILE_CLIENT, "client");
 	        loadData(FILE_INSTRUCTOR, "instructor");
 	        loadData(FILE_ADMIN, "Admin");
@@ -89,23 +114,28 @@ public class MyApp {
 	            // e.printStackTrace();
 	        }
 	    }
-	   private void addRole(String name, String password, String role) {
-	        switch (role) {
-	            case "client":
+	   private void addRole(String name, String password, String role2) {
+			
+	        switch (role2) {
+	            case "Client":
 	                this.clients.add(new Client (name, password));
 	                break;
-	            case "instructor":
+	            case "Instructor":
 	                this.instructors.add(new Instructor(name, password));
 	                break;
 	            case "Admin":
 	                this.admin.add(new Admin(name, password));
 	                break;
+	            case "Reg":
+	            	this.instructorsreg.add(new Instructor(name, password));
+	            	break;
 	            default:
 	                //System.err.println("Error: Unrecognized role '" + role + "'.");
 	                break;
-	        }
+	        
 	    }
-	   
+		
+	}
 	   private void loadPrograms() throws FileNotFoundException, IOException {
 	        try (BufferedReader br = new BufferedReader(new FileReader("files/programs.txt"))) {
 	            String line;
@@ -127,30 +157,44 @@ public class MyApp {
 	        }
 	    }
 	
-		public void login(String username, String password, String role) {
-		 boolean found = false;
-	        switch (role) {
-	            case "Client":
-	                found = loginClient(username, password);
-	                break;
-	            case "Instructor":
-	                found = loginInstructor(username, password);
-	                break;
-	            case "Admin":
-	                found = loginAdmin(username, password);
-	                break;
-	            default:
-	                System.err.println("Error: Unrecognized role '" + role + "'");
-	                throw new IllegalArgumentException("Invalid role: " + role);
-	        }
-	        if (found) {
-	            openUserDash();
-	            loggedName = username;
-	            ROLE = role;
-	            loggedPassword = password;
-	        }
-	}
-
+	   public void login(String username, String password, String role) throws IOException {
+			 boolean found = false;
+		        switch (role) {
+		            case "Client":
+		                found = loginClient(username, password);
+		                totalLogins++;
+		                System.out.println(username + " logged in.");
+		                try (FileWriter fileWriter = new FileWriter(loginHistoryFile, true);
+		                        PrintWriter printWriter = new PrintWriter(fileWriter)) {
+		                       printWriter.println("User: " + username + " logged in.");
+		                   }
+		                break;
+		            case "Instructor":
+		                found = loginInstructor(username, password);
+		                totalLogins++;
+		                System.out.println(username + " logged in.");
+		                try (FileWriter fileWriter = new FileWriter(loginHistoryFile, true);
+		                        PrintWriter printWriter = new PrintWriter(fileWriter)) {
+		                       printWriter.println("User: " + username + " logged in.");
+		                   }
+		                break;
+		                
+		           
+		            case "Admin":
+		                found = loginAdmin(username, password);
+		                break;
+		            default:
+		                System.err.println("Error: Unrecognized role '" + role + "'");
+		                throw new IllegalArgumentException("Invalid role: " + role);
+		        }
+		        if (found) {
+		            openUserDash();
+		            loggedName = username;
+		            ROLE = role;
+		            loggedPassword = password;
+		        }
+			
+		}
 	private void openUserDash() {
 		if (!UserLoggedIn) return;
         userDashOpen = true;
@@ -190,7 +234,73 @@ public class MyApp {
         }
         return false;
 	}
+	public void AdminDashboardpage() {
+		  adminDashbordOpen = true;
+		
+	}
 
+	public void AdminDashboardOptiones(String string) {
+		switch (string) {
+        case "1":
+            userManagementPageOpen = true;
+            System.out.println("User Management Page is now open.");
+            System.out.println("Options:");
+            System.out.println("1. View All Users");
+            System.out.println("2. Add User");
+            System.out.println("3. Delete User");
+            System.out.println("4. Update User");
+            System.out.println("5.  instructor registrations");
+            System.out.println("6.  user activity and engagement statistics");
+            System.out.println("6.1.  user activity ");
+            System.out.println("6.2.   engagement statistics");
+            System.out.println("7. Back to Admin Dashboard");
+            break;
+        case "2":
+        	ProgramMonitoring();
+            break;
+        case "3":
+            contentManagementPageOpen = true;
+            System.out.println("1. View Recipe");
+            System.out.println("2. Delete Recipe");
+            System.out.println("3. View feedback");
+            System.out.println("4. Respond feedback");
+            System.out.println("5. Delete feedback");
+            break;
+        case"4":
+        	
+        	
+        	break;
+        	
+        default:
+            //System.err.println("Error: Unrecognized option '" + option + "'.");
+            break;
+    }
+		
+	}
+
+	private void ProgramMonitoring() {
+		 System.out.println("1. Most Popular Programs");
+         System.out.println("2. Profit Reports");
+         System.out.println("3. Financial Report");
+         System.out.println("4. Program Activity");
+	}
+	
+	
+	
+	
+
+	public void viewAllUsers() {
+		System.out.println("List of all users:");
+        for (Client client : clients) {
+            System.out.println("Username: " + client.getUsername());
+        }
+        for (Instructor instructor : instructors) {
+            System.out.println("instructor: " + instructor.getUsername());
+        }
+        isUserListVisible = true;
+		
+	}
+	
 	public void navigateTo(String page) {
 		 if (InstructorLoggedIn ||AdminLoggedIn) {
 	            currentPage = page;
@@ -199,7 +309,376 @@ public class MyApp {
 	        }
 		
 	}
+	public void addUser(String username, String password, String role2) {
+		 SignUp(username, password, role2);
+	        String message = "User added successfully.";
+	        addedSuccessfully = true;
+	        printMessage(message);
+		
+	}
 
+	void printMessage(String message) {
+		 System.out.println(message);
+		
+	}
+
+	private void SignUp(String username, String password, String role2) {
+		switch (role2) {
+       case "Client":
+           filePath = FILE_CLIENT;
+           clients.add(new Client(username, password));
+           break;
+       case "Instructor":
+           filePath = FILE_INSTRUCTOR;
+           instructors.add(new Instructor(username, password));
+           break;
+       case "Admin":
+           filePath = FILE_ADMIN;
+           admin.add(new Admin(username, password));
+           break;
+       default:
+           // System.err.println("Error: Unrecognized role '" + role + "'.");
+           return;
+		
+	}
+		  updateFile(filePath, username, password, false);
+	        isSignedUp = true;
+	        printMessage(role2 + " added successfully!");
+	        isSigndUp = true;
+	
+}
+
+	private void updateFile(String filePath2, String username, String password, boolean isDelete) {
+		 try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
+	            if (!isDelete) {
+	                writer.write(username + "," + password);
+	                writer.newLine();
+	            }
+	        } catch (IOException e) {
+	            // System.err.println("An error occurred while updating the file: " + filePath + " " + e.getMessage());
+	        }
+		
+	}
+
+	public void updateUser(String oldUsername, String newUsername, String newPassword) {
+		 for (Client client : clients) {
+	            if (client.getUsername().equals(oldUsername)) {
+	            	client.setUsername(newUsername);
+	            	client.setPassword(newPassword);
+	                rewriteFile("files/clients.txt", clients);
+	                System.out.println("client updated successfully!");
+	                String message = "User updated successfully.";
+	                updatedSuccessfully = true;
+	                printMessage(message);
+	                return;
+	            }
+	        }
+	        for (Instructor instructor : instructors) {
+	            if (instructor.getUsername().equals(oldUsername)) {
+	            	instructor.setUsername(newUsername);
+	            	instructor.setPassword(newPassword);
+	                rewriteFile("files/instructors.txt", instructors);
+	                System.out.println("instructor updated successfully!");
+	                String message = "User updated successfully.";
+	                updatedSuccessfully = true;
+	                printMessage(message);
+	                return;
+	            }
+	        }
+	        for (Admin adminUser : admin) {
+	            if (adminUser.getUsername().equals(oldUsername)) {
+	                adminUser.setUsername(newUsername);
+	                adminUser.setPassword(newPassword);
+	                rewriteFile("files/admin.txt", admin);
+	                System.out.println("Admin updated successfully!");
+	                String message = "User updated successfully.";
+	                updatedSuccessfully = true;
+	                printMessage(message);
+	                return;
+	            }
+	        }
+
+	        System.out.println("User " + oldUsername + " not found.");
+	}
+		
+	public void deleteUser(String username) {
+		 clients.removeIf(client -> client.getUsername().equals(username));
+		 instructors.removeIf(instructor -> instructor.getUsername().equals(username));
+	     admin.removeIf(adminUser -> adminUser.getUsername().equals(username));
+
+	        rewriteFile("files/clients.txt", clients);
+	        rewriteFile("files/instructors.txt", instructors);
+	        rewriteFile("files/admin.txt", admin);
+
+	        System.out.println("User " + username + " deleted successfully!");
+	        String message = "User deleted successfully.";
+	        deletedSuccessfully = true;
+	        printMessage(message);
+		
+	}
+	private void SignUpUser(String username, String password, String role2) {
+		switch (role2) {
+       case "Client":
+           filePath = FILE_CLIENT;
+           clients.add(new Client(username, password));
+           break;
+       case "Instructor":
+           filePath = FILE_InstructorReg;
+           instructorsreg.add(new Instructor(username, password));
+           break;
+       case "Admin":
+           filePath = FILE_ADMIN;
+           admin.add(new Admin(username, password));
+           break;
+       default:
+           // System.err.println("Error: Unrecognized role '" + role + "'.");
+           return;
+		
+	}
+		  updateFile(filePath, username, password, false);
+	        isSignedUp = true;
+	        printMessage(role2 + " added successfully!");
+	        isSigndUp = true;
+	
+}
+	public void viewAllInstructors() {
+		System.out.println("List of all instructor registrations:");
+      
+       for (Instructor instructor : instructorsreg) {
+           System.out.println("instructor: " + instructor.getUsername());
+       }
+       isInstructorListVisible = true;
+		
+	}
+	public boolean isInstructorInList(String name) {
+       for (Instructor instructorreg : instructorsreg) {
+           if (instructorreg.getUsername().equalsIgnoreCase(name)) {
+               return true; // Instructor found
+           }
+       }
+       return false; // Instructor not found
+   }
+public void approveInsructor(String name) {
+	for (Instructor instructorreg : instructorsreg) {
+       if (instructorreg.getUsername().equals(name)) {
+       	instructors.add(instructorreg);
+       	instructorsreg.remove(instructorreg);
+       	 rewriteFile("files/instructors.txt", instructors);
+       	 rewriteFile("files/instructorsreg.txt", instructorsreg);
+       }
+		
+		
+	} 
+	
+}
+
+public void rejectInstructor(String name) {
+	for (Instructor instructor : instructorsreg) {
+       if (instructor.getUsername().equals(name)) {
+       	instructorsreg.remove(instructor);
+       	rewriteFile("files/instructorsreg.txt", instructorsreg);
+       }
+		
+		
+	} 
+	 
+	
+}
+
+public void selectSection(String string) {
+	switch(string) {
+	case "1":
+		displayUserActivity();
+		
+		break;
+	case "2":
+		
+		break;
+		
+	}
+}
+
+private void displayUserActivity() {
+	System.out.println("Total logins: " + totalLogins);
+	try {
+		System.out.println("login History: " );
+       java.nio.file.Files.lines(java.nio.file.Paths.get(loginHistoryFile))
+           .forEach(System.out::println); // Print each line from the file
+   } catch (IOException e) {
+       System.out.println("Error reading the login history file.");
+       e.printStackTrace();
+   }
+	
+}
+
+public boolean isUserLoggedIn(String username) {
+	try (BufferedReader reader = new BufferedReader(new FileReader(loginHistoryFile))) {
+       String line;
+       while ((line = reader.readLine()) != null) {
+           if (line.contains("User: " + username + " logged in.")) {
+           	System.out.println("This User is logged in.");
+               return true; // User is already in the file
+           }
+       }
+   } catch (IOException e) {
+       e.printStackTrace();
+   }
+   return false; // User is not in the file
+}
+
+public void countUserLogins(String username) {
+	 try (BufferedReader reader = new BufferedReader(new FileReader(loginHistoryFile))) {
+        String line;
+        while ((line = reader.readLine()) != null) {
+            if (line.contains("User: " + username + " logged in.")) {
+                loginCount++; // Increment the count if the line contains the username
+            }
+            System.out.println("Total this user logged in : " + loginCount); 
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+	
+	
+}
+
+public void selectReport(String reportType) throws FileNotFoundException, IOException {
+	switch(reportType) {
+	case "1":
+		getMostPopularPrograms ();
+		break;
+	case "2":
+		getProfitReports();
+		break;
+	case "3":
+		getFinancialReport();
+		break;
+	case "4":
+		getProgramActivity();
+		break;
+		
+	}
+	
+}
+
+private void getFinancialReport() throws FileNotFoundException, IOException {
+	 this.getSalesReport();
+	
+}
+
+private void getSalesReport() throws FileNotFoundException, IOException {
+	 try (BufferedReader br = new BufferedReader(new FileReader("files/mostpopularprograms.txt"))) {
+        String line;
+        double TotalSales = 0;
+        double Profit = 0;
+        int quantity = 0;
+        while ((line = br.readLine()) != null) {
+            String[] parts = line.split(",");
+            if (parts.length == 3) {
+                //  String purchasedName = parts[0];
+                String quan = parts[1];
+                String purchasedPrice = parts[2];
+                TotalSales += (Double.parseDouble(purchasedPrice) * Double.parseDouble(quan));
+                quantity += Double.parseDouble(quan);
+            }
+        }
+        Profit = TotalSales - quantity * 50;
+        System.out.println("The Total number of sales: " + quantity);
+        System.out.println("The total sales is: " + TotalSales);
+        System.out.println("The profit is: " + Profit);
+        reportGenerated = true;
+    }
+	
+}
+
+private void getProfitReports() throws FileNotFoundException, IOException {
+	try (BufferedReader br = new BufferedReader(new FileReader("files/mostpopularprograms.txt"))) {
+       String line;
+       double TotalSales = 0;
+       double Profit = 0;
+       int quantity = 0;
+       while ((line = br.readLine()) != null) {
+           String[] parts = line.split(",");
+           if (parts.length == 3) {
+               String purchasedName = parts[0];
+               String quan = parts[1];
+               String purchasedPrice = parts[2];
+               TotalSales += (Double.parseDouble(purchasedPrice) * Double.parseDouble(quan));
+               quantity += Double.parseDouble(quan);
+           }
+       }
+       Profit = TotalSales - quantity * 50;
+       System.out.println("The profit is: " + Profit);
+       reportGenerated = true;
+   }
+   reportShown = true;
+	
+}
+
+private void getMostPopularPrograms() throws FileNotFoundException, IOException {
+	try (BufferedReader br = new BufferedReader(new FileReader("files/mostpopularprograms.txt"))) {
+       String line;
+       int quantity = 0;
+       String name = "";
+       while ((line = br.readLine()) != null) {
+           String[] parts = line.split(",");
+           if (parts.length == 3) {
+               String productname = parts[0];
+               String quan = parts[1];
+               if (quantity < Integer.parseInt(quan)) {
+                   quantity = Integer.parseInt(quan);
+                   name = productname;
+               }
+           }
+       }
+       System.out.println("The highest number of sales: " + quantity);
+       System.out.println("The most popular programs is: " + name);
+   }
+	
+}
+
+public void getProgramActivity() throws FileNotFoundException, IOException {
+	try (BufferedReader br = new BufferedReader(new FileReader("files/programactivity.txt"))) {
+		String line;
+       String activity="" ;
+       String name = "";
+       while ((line = br.readLine()) != null) {
+           String[] parts = line.split(",");
+           if (parts.length == 2) {
+               String programname = parts[0];
+               String acti = parts[1];
+               if(acti.equals("active")) {
+               	name=programname;
+               	activeprograms.add(name);
+               }
+               else if(acti.equals("completed")) {
+               	
+               	name=programname;
+               	compprograms.add(name);
+               }
+               }
+		
+		
+		
+	}
+       
+	
+}
+}
+
+public void printActiveProgram() {
+	 for (String active : activeprograms) {
+		 System.out.println(active);
+	
+}
+}
+
+public void printCompletedProgram() {
+	for (String comp : compprograms) {
+		 System.out.println(comp);
+	
+}
+	}
 	public void CreateProgram(String title, String duration, String level, String goals, String videoPath, String imagePath, String documentPath, String price) {
 		if (title.isEmpty() || duration.isEmpty() || level.isEmpty() || goals.isEmpty()) {
 	        lastMessage = "All required fields must be filled.";

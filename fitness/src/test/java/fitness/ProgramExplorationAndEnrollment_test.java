@@ -44,7 +44,7 @@ public class ProgramExplorationAndEnrollment_test {
 	    	boolean allMatch = true;
 	        
 	        for (Program p : filteredPrograms) {
-	            if (!"Beginner".equals(p.getDifficulty())) {
+	            if (!"Beginner".equals(p.getLevel())) {
 	                allMatch = false;
 	                break;
 	            }

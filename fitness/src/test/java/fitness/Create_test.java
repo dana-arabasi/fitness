@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
+
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -17,7 +19,7 @@ public class Create_test {
 	}
 	
 	@Given("I am logged in as an instructor")
-	public void i_am_logged_in_as_an_instructor() {
+	public void i_am_logged_in_as_an_instructor() throws IOException {
 		app.login("Dana","123","Instructor");
 		assertTrue(app.InstructorLoggedIn);
 	}
