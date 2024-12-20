@@ -12,7 +12,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MyApp {
 
@@ -41,18 +43,29 @@ public class MyApp {
 	private boolean updateMessage;
 	private Program updatedProgram;
 	private boolean deletedProductSuccessfully;
+	private boolean messageSentToUser;
+	private ArrayList<String> usermessageHistory;
+    private Map<String, String> clientProfiles ;
+    private Map<String, String> userNotifications;
+	private Map<String, String> userQueries;
+	private boolean messageSentToInstructor;
+	private String lastResponse;
+	private ArrayList<String> instructormessageHistory;
+
 	
 	
 	   public MyApp() throws FileNotFoundException, IOException {
 	        super();
 	        this.client = new Client();
 	        this.client.setApp(this);
-	    
+	        this. usermessageHistory = new ArrayList<>();
 	        this.clients = new ArrayList<>();
 	        this.instructors = new ArrayList<>();
 	        this.admin = new ArrayList<>();
 	        this.Programs = new ArrayList<>();
-	        
+	        this.clientProfiles= new HashMap<>();
+	        this.userNotifications = new HashMap<>();
+	        this.instructormessageHistory=new ArrayList<>();
 
 	        loadData(FILE_CLIENT, "client");
 	        loadData(FILE_INSTRUCTOR, "instructor");
@@ -375,6 +388,115 @@ public class MyApp {
 	public boolean programDeletionSuccess() {
 		return deletedProductSuccessfully;
 	}
+
+	public void sendMessageToUser(String username, String message) {
+		  String path = "files/messagesToClients.txt";
+	        String content = username + ", " + message;
+	        usermessageHistory.add(content);
+	        try (BufferedWriter writer = new BufferedWriter(new FileWriter(path, true))) {
+	            writer.write(content);
+	            writer.newLine();
+	            System.out.println("Message sent successfully.");
+	            messageSentToUser = true;
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	}
+
+	public boolean isMessageReceived() {
+		return messageSentToUser;
+	}
+
+	public boolean isOnPage(String string) {
+		if (currentPage.equalsIgnoreCase(string))
+			return true;
+		else
+			return false;
+	}
+
+	public boolean isMessageInHistory() {
+		
+		return !usermessageHistory.isEmpty();
+	}
+
+	public void provideFeedbackOrUploadReport(String username, String feedbackOrReport) throws IOException {
+		if (username == null || username.isEmpty() || feedbackOrReport == null || feedbackOrReport.isEmpty()) {
+            throw new IllegalArgumentException("Username and feedback/report must not be empty.");
+        }
+		String path = "files/feedbackToClients.txt";
+        String content = username + ", " + feedbackOrReport;
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(path, true))) {
+            writer.write(content);
+            writer.newLine();
+        clientProfiles.put(username, feedbackOrReport);
+        System.out.println("Feedback/Report provided for " + username + ": " + feedbackOrReport);
+		
+	}}
+
+	public boolean isFeedbackOrReportVisibleInProfile(String username) {
+        return clientProfiles.containsKey(username) && !clientProfiles.get(username).isEmpty();
+    }
+
+	public String getFeedbackOrReport(String username) {
+        return clientProfiles.get(username);
+    }
+
+	public void sendNotification(String username, String notification) throws IOException {
+		if (username == null || username.isEmpty() || notification == null || notification.isEmpty()) {
+            throw new IllegalArgumentException("Username and notification content must not be empty.");
+        }
+		String path = "files/notificationToClients.txt";
+        String content = username + ", " + notification;
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(path, true))) {
+            writer.write(content);
+            writer.newLine();
+        userNotifications.put(username, notification);
+        System.out.println("Notification sent to " + username + ": " + notification);
+		
+	}}
+
+	public boolean isNotificationInInbox(String username, String notification) {
+		  return userNotifications.containsKey(username) && userNotifications.get(username).equals(notification);
+	}
+
+	public void sendClientQuery(String username, String query) {
+		 String path = "files/messagesToInstructor.txt";
+	        String content = username + ", " + query;
+	        instructormessageHistory.add(content);
+	        try (BufferedWriter writer = new BufferedWriter(new FileWriter(path, true))) {
+	            writer.write(content);
+	            writer.newLine();
+	            System.out.println("Message sent successfully.");
+	            messageSentToInstructor = true;
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+		
+	}
+
+	public void respondToQuery(String username, String response) throws IOException {
+		this.lastResponse = username +","+response;
+		String path = "files/respondFromInstructors.txt";
+        String content = username + ", " + response;
+        usermessageHistory.add(content);
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(path, true))) {
+            writer.write(content);
+            writer.newLine();
+            System.out.println("respond sent successfully.");
+        }
+        
+	}
+
+	public boolean isResponseReceived(String username) {
+		 return lastResponse != null && !lastResponse.isEmpty();
+	}
+
+
+	
+
+	
+
+	
 
 	
 }

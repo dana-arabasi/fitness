@@ -24,7 +24,7 @@ public class Create_test {
 
 	@Given("I am on the program management page")
 	public void i_am_on_the_program_management_page() {
-		app.navigateTo(" Program ManagementDashboard");
+		app.navigateTo(" Program Management page");
 	}
 
 	@When("I  select {string} and enters the program title {string}, duration {string}, difficulty level {string},goals {string} ,\\(video tutorials {string}, images {string}, or documents  {string} ),and the  price for the program {string} \\(if applicable).")
