@@ -42,7 +42,7 @@ public class User {
     }
 
     
-    public void setId(Object id) {
+    public void setId(String id) {
         this.id = id;
     }
 

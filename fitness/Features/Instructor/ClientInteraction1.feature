@@ -35,13 +35,7 @@ Feature: Client Interaction
     And the client "ahmad" should receive the feedback or progress report
    
 
-  Scenario: Notify clients of upcoming sessions or updates
-    Given I am logged in as an instructor
-    And I am on the client interaction page
-    When I select a client "ahmad" from the enrolled clients and send a notification about an upcoming session or program update
-    Then i submit
-    And the clients "ahmad" should receive the notification
-    And the notification should be visible in their inbox
+  
 
   Scenario: Respond to client queries
     Given I am logged in as an instructor

@@ -7,27 +7,27 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 public class ProgramCatalog {
-	private List<Program> programs = new ArrayList<Program>();
+	private List<Programs> programs = new ArrayList<Programs>();
     private Map<String, Boolean> userEnrollments = new HashMap<String, Boolean>();
 	
 	
     public ProgramCatalog() {
-        programs.add(new Program("Weightlifting for Beginners", "Beginner", "Muscle Building", "12 weeks", "Build strength and muscle","Mon/Wed/Fri - 7:00 PM"));
-        programs.add(new Program("Yoga for Flexibility", "Beginner", "Flexibility", "8 weeks", "Improve flexibility and balance","Mon/Wed/Fri - 8:00 PM"));
-        programs.add(new Program("Intermediate Strength Training", "Intermediate", "Muscle Building", "16 weeks", "Increase strength and endurance","Mon/Wed/Fri - 10:00 PM"));
-        programs.add(new Program("Advanced Yoga", "Advanced", "Flexibility", "12 weeks", "Master advanced yoga poses","Mon/Wed/Fri - 11:00 PM"));
+        programs.add(new Programs("Weightlifting for Beginners", "Beginner", "Muscle Building", "12 weeks", "Build strength and muscle","Mon/Wed/Fri - 7:00 PM"));
+        programs.add(new Programs("Yoga for Flexibility", "Beginner", "Flexibility", "8 weeks", "Improve flexibility and balance","Mon/Wed/Fri - 8:00 PM"));
+        programs.add(new Programs("Intermediate Strength Training", "Intermediate", "Muscle Building", "16 weeks", "Increase strength and endurance","Mon/Wed/Fri - 10:00 PM"));
+        programs.add(new Programs("Advanced Yoga", "Advanced", "Flexibility", "12 weeks", "Master advanced yoga poses","Mon/Wed/Fri - 11:00 PM"));
     }
 	
-    public List<Program> getPrograms() {
+    public List<Programs> getPrograms() {
         return programs;
     }
 
-    public List<Program> filterPrograms(String difficulty, String focusArea) {
-        List<Program> filteredPrograms = new ArrayList<Program>(programs);
+    public List<Programs> filterPrograms(String difficulty, String focusArea) {
+        List<Programs> filteredPrograms = new ArrayList<Programs>(programs);
 
         if (difficulty != null && !difficulty.isEmpty()) {
-            List<Program> tempFilteredPrograms = new ArrayList<Program>();
-            for (Program p : filteredPrograms) {
+            List<Programs> tempFilteredPrograms = new ArrayList<Programs>();
+            for (Programs p : filteredPrograms) {
                 if (p.getDifficulty().equalsIgnoreCase(difficulty)) {
                     tempFilteredPrograms.add(p);
                 }
@@ -36,8 +36,8 @@ public class ProgramCatalog {
         }
 
         if (focusArea != null && !focusArea.isEmpty()) {
-            List<Program> tempFilteredPrograms = new ArrayList<Program>();
-            for (Program p : filteredPrograms) {
+            List<Programs> tempFilteredPrograms = new ArrayList<Programs>();
+            for (Programs p : filteredPrograms) {
                 if (p.getFocusArea().equalsIgnoreCase(focusArea)) {
                     tempFilteredPrograms.add(p);
                 }
@@ -50,7 +50,7 @@ public class ProgramCatalog {
     }
 
     public boolean enrollUser(String userId, String programName) {
-        Program program = findProgramByName(programName);
+        Programs program = findProgramByName(programName);
         if (program != null) {
             program.addUser(userId); // Add user to the program's enrolledUsers list
             userEnrollments.put(userId + ":" + programName, true); 
@@ -66,7 +66,7 @@ public class ProgramCatalog {
         if (userEnrollments.getOrDefault(userId + ":" + programName, true)) {
             return true;
         }
-        Program program = findProgramByName(programName);
+        Programs program = findProgramByName(programName);
         if (program != null) {
             return program.getEnrolledUsers().contains(userId);
         }
@@ -75,8 +75,8 @@ public class ProgramCatalog {
         
     }
 
-    private Program findProgramByName(String name) {
-        for (Program program : programs) {
+    private Programs findProgramByName(String name) {
+        for (Programs program : programs) {
             if (program.getName().equals(name)) {
                 return program;
             }
@@ -85,7 +85,7 @@ public class ProgramCatalog {
     }
 	
 	
-	class Program {
+	public class Programs {
 		 private String name;
 	        private String difficulty;
 	        private String focusArea;
@@ -94,7 +94,7 @@ public class ProgramCatalog {
 	        private String schedule;
 	        private List<String> enrolledUsers;
 
-	        public Program(String name, String difficulty, String focusArea, String duration, String description, String schedule) {
+	        public Programs(String name, String difficulty, String focusArea, String duration, String description, String schedule) {
 	            this.name = name;
 	            this.difficulty = difficulty;
 	            this.focusArea = focusArea;
@@ -145,8 +145,8 @@ public class ProgramCatalog {
     }
 
 
-	public Program getProgramByName(String programName) {
-		for (Program program : programs) {
+	public Programs getProgramByName(String programName) {
+		for (Programs program : programs) {
 	        if (program.getName().equals(programName)) {
 	            return program;
 	        }

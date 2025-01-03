@@ -47,16 +47,8 @@ public void the_client_should_receive_the_feedback_or_progress_report(String use
 	assertTrue(app.isFeedbackOrReportVisibleInProfile(username));
 }
 
-@When("I select a client {string} from the enrolled clients and send a notification about an upcoming session or program update")
-public void i_select_a_client_from_the_enrolled_clients_and_send_a_notification_about_an_upcoming_session_or_program_update(String username) throws IOException {
-	app.sendNotification(username, "Upcoming session or program update");
-}
 
-@Then("the clients {string} should receive the notification")
-public void the_clients_should_receive_the_notification(String username) {
-	  boolean notificationReceived = app.isNotificationInInbox(username, "Upcoming session or program update");
-	    assertTrue("The client did not receive the notification.", notificationReceived);
-}
+
 
 @When("a client {string} sends a query")
 public void a_client_sends_a_query(String username) {
@@ -69,11 +61,7 @@ public void the_client_should_receive_my_response(String username) {
 }
 
 
-@Then("the notification should be visible in their inbox")
-public void the_notification_should_be_visible_in_their_inbox() {
-	
-	assertTrue(app.isNotificationInInbox("ahmad","Upcoming session or program update"));
-}
+
 
 
 

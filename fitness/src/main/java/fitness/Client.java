@@ -5,10 +5,12 @@ public class Client {
 	private MyApp app;
 	private String userName;
 	private String password;
+	
 
 	
 	public Client() {
 		super();
+	
 	}
 	
 	 public Client(String name, String password2) {

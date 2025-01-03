@@ -25,7 +25,7 @@ public class MyApp {
 	private static final String FILE_InstructorReg= "files/instructorsreg.txt";
     private static final String  loginHistoryFile= "files/login.txt";
     private String filePath = "";
-	private boolean isUserLoggedIn;
+	public boolean isUserLoggedIn;
 	 public boolean isSignedUp;
 	private boolean AdminLoggedIn;
 	public ArrayList<Admin> admin;
@@ -74,6 +74,8 @@ public class MyApp {
 	private boolean isInstructorListVisible;
 	private int totalLogins=0;
 	private int loginCount=0;
+	private boolean subscriptionmanagementpageOpen;
+	private boolean programMonitoringPageOpen;
 	
 	   public MyApp() throws FileNotFoundException, IOException {
 	        super();
@@ -93,10 +95,10 @@ public class MyApp {
 	        this.compprograms=new ArrayList<>();
 	        
 	        loadData(FILE_CLIENT, "client");
-	        loadData(FILE_INSTRUCTOR, "instructor");
+	        loadData(FILE_INSTRUCTOR, "Instructor");
 	        loadData(FILE_ADMIN, "Admin");
 	        loadPrograms();
-	        //   loadOrders();
+	      
 	    }
 	   
 	   private void loadData(String fileName, String role) {
@@ -141,7 +143,7 @@ public class MyApp {
 	            String line;
 	            while ((line = br.readLine()) != null) {
 	                String[] parts = line.split(",");
-	                if (parts.length == 8) {
+	                if (parts.length == 11) {
 	                    String title = parts[0];
 	                    String duration = parts[1];
 	                    String level = parts[2];
@@ -150,7 +152,10 @@ public class MyApp {
 	                    String imagePath=parts[5];
 	                    String documentPath=parts[6];
 	                    String price=parts[7];
-	                    Program a = new Program(title, duration, level, goals, videoPath, imagePath, documentPath, price);
+	                    String sessionType=parts[8];
+	                    String sessionDay=parts[9];
+	                    String sessionTime=parts[10];
+	                    Program a = new Program(title, duration, level, goals, videoPath, imagePath, documentPath, price,sessionType,sessionDay,sessionTime);
 	                    Programs.add(a);
 	                }
 	            }
@@ -236,55 +241,68 @@ public class MyApp {
 	}
 	public void AdminDashboardpage() {
 		  adminDashbordOpen = true;
-		
+		  System.out.println("1. User Management Page");
+        System.out.println("2. Program Monitoring Page");
+        System.out.println("3. Content Management Page");
+        System.out.println("4. Subscription Management Page");
+        System.out.println("5. Logout");
 	}
 
 	public void AdminDashboardOptiones(String string) {
 		switch (string) {
-        case "1":
-            userManagementPageOpen = true;
-            System.out.println("User Management Page is now open.");
-            System.out.println("Options:");
-            System.out.println("1. View All Users");
-            System.out.println("2. Add User");
-            System.out.println("3. Delete User");
-            System.out.println("4. Update User");
-            System.out.println("5.  instructor registrations");
-            System.out.println("6.  user activity and engagement statistics");
-            System.out.println("6.1.  user activity ");
-            System.out.println("6.2.   engagement statistics");
-            System.out.println("7. Back to Admin Dashboard");
-            break;
-        case "2":
-        	ProgramMonitoring();
-            break;
-        case "3":
-            contentManagementPageOpen = true;
-            System.out.println("1. View Recipe");
-            System.out.println("2. Delete Recipe");
-            System.out.println("3. View feedback");
-            System.out.println("4. Respond feedback");
-            System.out.println("5. Delete feedback");
-            break;
-        case"4":
-        	
-        	
-        	break;
-        	
-        default:
-            //System.err.println("Error: Unrecognized option '" + option + "'.");
-            break;
-    }
+      case "1":
+          userManagementPageOpen = true;
+          System.out.println("User Management Page is now open.");
+          System.out.println("Options:");
+          System.out.println("1. View All Users");
+          System.out.println("2. Add User");
+          System.out.println("3. Delete User");
+          System.out.println("4. Update User");
+          System.out.println("5.  instructor registrations");
+          System.out.println("6.  user activity and engagement statistics");
+          //System.out.println("6.1.  user activity ");
+          //System.out.println("6.2.   engagement statistics");
+          System.out.println("7. Back to Admin Dashboard");
+          break;
+      case "2":
+      	programMonitoringPageOpen=true;
+      	ProgramMonitoring();
+          break;
+      case "3":
+          contentManagementPageOpen = true;
+          System.out.println("1. View Recipe");
+          System.out.println("2. Delete Recipe");
+          System.out.println("3. View feedback");
+          System.out.println("4. Respond feedback");
+          System.out.println("5. Delete feedback");
+          break;
+      case"4":
+      	subscriptionmanagementpageOpen=true;
+      	 System.out.println("1. View subscription plans ");
+           System.out.println("2. Identify programs for each subscription plans");
+           System.out.println("3.  Upgrade a subscription plan for a instructor");
+           System.out.println("4.  Downgrade a subscription plan for a instructor");
+      	
+      	break;
+      	
+      default:
+          //System.err.println("Error: Unrecognized option '" + option + "'.");
+          break;
+  }
 		
 	}
 
 	private void ProgramMonitoring() {
 		 System.out.println("1. Most Popular Programs");
-         System.out.println("2. Profit Reports");
-         System.out.println("3. Financial Report");
-         System.out.println("4. Program Activity");
+       System.out.println("2. Profit Reports");
+       System.out.println("3. Financial Report");
+       System.out.println("4. Program Activity");
 	}
 	
+	
+	
+	
+
 	
 	
 	
@@ -322,7 +340,7 @@ public class MyApp {
 		
 	}
 
-	private void SignUp(String username, String password, String role2) {
+	public void SignUp(String username, String password, String role2) {
 		switch (role2) {
        case "Client":
            filePath = FILE_CLIENT;
@@ -416,7 +434,7 @@ public class MyApp {
 	        printMessage(message);
 		
 	}
-	private void SignUpUser(String username, String password, String role2) {
+	public void SignUpUser(String username, String password, String role2) {
 		switch (role2) {
        case "Client":
            filePath = FILE_CLIENT;
@@ -485,18 +503,40 @@ public void rejectInstructor(String name) {
 	
 }
 
-public void selectSection(String string) {
+public void selectSection(String string, String string2) throws FileNotFoundException, IOException {
 	switch(string) {
 	case "1":
 		displayUserActivity();
-		
-		break;
 	case "2":
-		
+		displayEngagementStatistics(string2);
 		break;
 		
 	}
 }
+
+private void displayEngagementStatistics(String string2) throws FileNotFoundException, IOException {
+	try (BufferedReader br = new BufferedReader(new FileReader("files/clientPrograms.txt"))) {
+        String line;
+        double TotalPrograms = 0;
+        while ((line = br.readLine()) != null) {
+            String[] parts = line.split(",");
+            if (parts.length == 5) {
+                String clientName = parts[0];
+                if(clientName.equalsIgnoreCase(string2))
+                {
+                	TotalPrograms++;
+                	
+                }
+                
+            }
+        }
+        
+        System.out.println("Total programs for this user  : " + TotalPrograms); 
+        
+    }
+	
+}
+
 
 private void displayUserActivity() {
 	System.out.println("Total logins: " + totalLogins);
@@ -562,12 +602,7 @@ public void selectReport(String reportType) throws FileNotFoundException, IOExce
 }
 
 private void getFinancialReport() throws FileNotFoundException, IOException {
-	 this.getSalesReport();
-	
-}
-
-private void getSalesReport() throws FileNotFoundException, IOException {
-	 try (BufferedReader br = new BufferedReader(new FileReader("files/mostpopularprograms.txt"))) {
+	try (BufferedReader br = new BufferedReader(new FileReader("files/mostpopularprograms.txt"))) {
         String line;
         double TotalSales = 0;
         double Profit = 0;
@@ -591,29 +626,32 @@ private void getSalesReport() throws FileNotFoundException, IOException {
 	
 }
 
+
+
 private void getProfitReports() throws FileNotFoundException, IOException {
 	try (BufferedReader br = new BufferedReader(new FileReader("files/mostpopularprograms.txt"))) {
-       String line;
-       double TotalSales = 0;
-       double Profit = 0;
-       int quantity = 0;
-       while ((line = br.readLine()) != null) {
-           String[] parts = line.split(",");
-           if (parts.length == 3) {
-               String purchasedName = parts[0];
-               String quan = parts[1];
-               String purchasedPrice = parts[2];
-               TotalSales += (Double.parseDouble(purchasedPrice) * Double.parseDouble(quan));
-               quantity += Double.parseDouble(quan);
-           }
-       }
-       Profit = TotalSales - quantity * 50;
-       System.out.println("The profit is: " + Profit);
-       reportGenerated = true;
-   }
-   reportShown = true;
+        String line;
+        double TotalSales = 0;
+        double Profit = 0;
+        int quantity = 0;
+        while ((line = br.readLine()) != null) {
+            String[] parts = line.split(",");
+            if (parts.length == 3) {
+                String purchasedName = parts[0];
+                String quan = parts[1];
+                String purchasedPrice = parts[2];
+                TotalSales += (Double.parseDouble(purchasedPrice) * Double.parseDouble(quan));
+                quantity += Double.parseDouble(quan);
+            }
+        }
+        Profit = TotalSales - quantity * 50;
+        System.out.println("The profit is: " + Profit);
+        reportGenerated = true;
+    }
+    reportShown = true;
 	
 }
+
 
 private void getMostPopularPrograms() throws FileNotFoundException, IOException {
 	try (BufferedReader br = new BufferedReader(new FileReader("files/mostpopularprograms.txt"))) {
@@ -678,9 +716,93 @@ public void printCompletedProgram() {
 		 System.out.println(comp);
 	
 }
+}
+	
+	public boolean thereIsProgram() throws FileNotFoundException, IOException {
+		try (BufferedReader br = new BufferedReader(new FileReader("files/programs.txt"))) {
+	        String line;
+	        if ((line = br.readLine()) != null) {
+	        	return true;
+	        	}
+	        else 
+	        	return false;
+		
+
+
 	}
-	public void CreateProgram(String title, String duration, String level, String goals, String videoPath, String imagePath, String documentPath, String price) {
-		if (title.isEmpty() || duration.isEmpty() || level.isEmpty() || goals.isEmpty()) {
+	}
+
+	public void SubscriptionPlanPrograms(String name, String plan) throws FileNotFoundException, IOException {
+			try (BufferedReader br = new BufferedReader(new FileReader("files/programs.txt"))) {
+		        String line;
+		        while ((line = br.readLine()) != null) {
+		        	 String[] parts = line.split(",");
+		        	 if (parts.length == 8) {
+		                 String programname = parts[0];
+		                
+		                 if(programname.equalsIgnoreCase(name)) {
+		                	 if (plan.equalsIgnoreCase("Basic")) {
+		                	 try (BufferedWriter writer = new BufferedWriter(new FileWriter("files/BasicProgram.txt", false))) {
+		                		 writer.write(line);
+		     	                writer.newLine();
+		                	 }
+		     	             try (BufferedWriter writer1 = new BufferedWriter(new FileWriter("files/PremiumProgram.txt", false))) {
+			                		 writer1.write(line);
+			     	                writer1.newLine();
+		                	 }
+		                 }
+		                	 else if (plan.equalsIgnoreCase("Premium")) {
+		                		 try (BufferedWriter writer1 = new BufferedWriter(new FileWriter("files/PremiumProgram.txt", false))) {
+			                		 writer1.write(line);
+			     	                writer1.newLine();
+		                	 }
+		                			
+		                		}
+
+		        	
+		        	}
+		        
+			
+		       }
+			}
+		}
+		
+		}
+
+	public void displayPlanPrograms(String string2) {
+		if(string2.equalsIgnoreCase("Basic")) {
+		try (BufferedReader br = new BufferedReader(new FileReader("files/BasicProgram.txt"))) {
+	        String line;
+	        System.out.println("Basic Programs:");
+	        while ((line = br.readLine()) != null) {
+	            System.out.println(line);
+	        }
+		
+	    }
+		catch (IOException e) {
+	        e.printStackTrace(); 
+	    }
+		}
+		else if (string2.equalsIgnoreCase("Premium")){
+			try (BufferedReader br = new BufferedReader(new FileReader("files/PremiumProgram.txt"))) {
+		        String line;
+		        System.out.println("Premium Programs:");
+		        while ((line = br.readLine()) != null) {
+		            System.out.println(line);
+		        }
+		}
+		catch (IOException e) {
+	        e.printStackTrace(); 
+	    }
+		
+	}
+		
+	}
+
+
+
+	public void CreateProgram(String title, String duration, String level, String goals, String videoPath, String imagePath, String documentPath, String price, String sessionType, String sessionDay, String sessionTime) {
+		if (title.isEmpty() || duration.isEmpty() || level.isEmpty() || goals.isEmpty()||sessionType.isEmpty()||sessionDay.isEmpty()||sessionTime.isEmpty()) {
 	        lastMessage = "All required fields must be filled.";
 	        currentProgram = null;
 	        return;
@@ -707,8 +829,8 @@ public void printCompletedProgram() {
             currentProgram = null;
             return;
         }
-
-	    currentProgram = new Program(title, duration, level, goals, videoPath, imagePath, documentPath, price);
+	
+	    currentProgram = new Program(title, duration, level, goals, videoPath, imagePath, documentPath, price,sessionType,sessionDay,sessionTime);
 	    Programs.add( currentProgram);
 	    lastMessage = "Program created successfully";
 	        rewriteFile("files/Programs.txt", Programs);  
@@ -731,7 +853,7 @@ public void printCompletedProgram() {
 	                } else if (obj instanceof Admin) {
 	                    writer.write(((Admin) obj).getUsername() + "," + ((Admin) obj).getPassword());
 	                } else if (obj instanceof Program) {
-	                    writer.write(((Program) obj).getTitle() + "," + ((Program) obj).getDuration() + "," + ((Program) obj).getLevel() + "," +((Program) obj).getGoals()+ "," +((Program) obj).getVedioPath()+ "," +((Program) obj).getImagePath()+ "," +((Program) obj).getDocumentPath()+ "," +((Program) obj).getPrice() );
+	                    writer.write(((Program) obj).getTitle() + "," + ((Program) obj).getDuration() + "," + ((Program) obj).getLevel() + "," +((Program) obj).getGoals()+ "," +((Program) obj).getVedioPath()+ "," +((Program) obj).getImagePath()+ "," +((Program) obj).getDocumentPath()+ "," +((Program) obj).getPrice()+ "," +((Program) obj).getSessionType()+ "," +((Program) obj).getSessionDay()+ "," +((Program) obj).getSessionTime() );
 	                
 	                }
 	                writer.newLine();
@@ -742,54 +864,52 @@ public void printCompletedProgram() {
 		
 	}
 
-	public void editProgram(String searchtitle,String title, String duration, String level, String goals, String videoPath, String imagePath, String documentPath, String price ) {
-		 String updatedline = title + "," + duration + "," + level +"," +goals +"," + videoPath +"," + imagePath +"," + documentPath +"," +price;
-		 try {
-			 if (title.isEmpty() || duration.isEmpty() || level.isEmpty() || goals.isEmpty()) {
-		        lastMessage = "Program update failed as expected.";
-		        
-		        return;
-		    }
-		    if (videoPath.isEmpty() && imagePath.isEmpty() && documentPath.isEmpty()) {
-		        lastMessage =  "Program update failed as expected.";
-		       
-		        return;
-		    }
-		    if(price.contains("-")) {
-		    	lastMessage= "Program update failed as expected.";	
-		    	 return;
-		    }
+	public void editProgram(String searchtitle,String title, String duration, String level, String goals, String videoPath, String imagePath, String documentPath, String price, String sessionType, String sessionDay, String sessionTime ) throws IOException {
+		// String updatedline = title + "," + duration + "," + level +"," +goals +"," + videoPath +"," + imagePath +"," + documentPath +"," +price+"," +sessionType +"," +sessionDay +"," +sessionTime;
+		 if (title.isEmpty() || duration.isEmpty() || level.isEmpty() || goals.isEmpty()||sessionType.isEmpty()||sessionDay.isEmpty()||sessionTime.isEmpty()) {
+		    lastMessage = "Program update failed as expected.";
 		    
-		    String videoExtension = getFileExtension(videoPath);
-		    String imageExtension = getFileExtension(imagePath);
-		    String docExtension = getFileExtension(documentPath);
-	        List <String> allowedFileTypes = Arrays.asList("mp4", "jpg", "png", "pdf");
+		    return;
+		}
+		if (videoPath.isEmpty() && imagePath.isEmpty() && documentPath.isEmpty()) {
+		    lastMessage =  "Program update failed as expected.";
+		   
+		    return;
+		}
+		if(price.contains("-")) {
+			lastMessage= "Program update failed as expected.";	
+			 return;
+		}
+		
+		String videoExtension = getFileExtension(videoPath);
+		String imageExtension = getFileExtension(imagePath);
+		String docExtension = getFileExtension(documentPath);
+		List <String> allowedFileTypes = Arrays.asList("mp4", "jpg", "png", "pdf");
 
-	        if ((!videoPath.isEmpty() && !allowedFileTypes.contains(videoExtension.toLowerCase())) ||
-	            (!imagePath.isEmpty() && !allowedFileTypes.contains(imageExtension.toLowerCase())) ||
-	            (!documentPath.isEmpty() && !allowedFileTypes.contains(docExtension.toLowerCase()))) {
-	            lastMessage = "Program update failed as expected.";
-	            
-	            return;
-	        }
-	            List<String> lines = Files.readAllLines(Paths.get("files/programs.txt"));
-	            List<String> updatedLines = new ArrayList<>();
-	            for (String line : lines) {
-	                if (line.contains(searchtitle)) {
-	                	
-	                    updatedLines.add(updatedline); // Replace the line
-	                    updateMessage = true;
-	            	    lastMessage = "Program updated successfully";
-
-	                } else {
-	                    updatedLines.add(line); // Keep the line unchanged
-	                }
-	            }
-	            Files.write(Paths.get("files/programs.txt"), updatedLines);
-	            System.out.println("File has been updated successfully.");
-	        } catch (IOException e) {
-	            //  e.printStackTrace();
-	        }
+		if ((!videoPath.isEmpty() && !allowedFileTypes.contains(videoExtension.toLowerCase())) ||
+		    (!imagePath.isEmpty() && !allowedFileTypes.contains(imageExtension.toLowerCase())) ||
+		    (!documentPath.isEmpty() && !allowedFileTypes.contains(docExtension.toLowerCase()))) {
+		    lastMessage = "Program update failed as expected.";
+		    
+		    return;
+		}
+		for(Program p :Programs) {
+			if(p.getTitle().equalsIgnoreCase(searchtitle)) {
+			p.setTitle(title);
+			p.setDuration(duration);
+			p.setGoals(goals);
+			p.setLevel(level);
+			p.setVedioPath(videoPath);
+			p.setImagePath(imagePath);
+			p.setDocumentPath(documentPath);
+			p.setPrice(price);
+			p.setSessionType(sessionType);
+			p.setSessionDay(sessionDay);
+			p.setSessionTime(sessionTime);
+		}}
+		lastMessage = "Program updated successfully";
+		updateMessage=true;
+		rewriteFile("files/Programs.txt", Programs);
 	}
 
 	public boolean isProgramInList(String name) {
@@ -934,9 +1054,9 @@ public void printCompletedProgram() {
 		
 	}}
 
-	public boolean isNotificationInInbox(String username, String notification) {
+	/*public boolean isNotificationInInbox(String username, String notification) {
 		  return userNotifications.containsKey(username) && userNotifications.get(username).equals(notification);
-	}
+	}*/
 
 	public void sendClientQuery(String username, String query) {
 		 String path = "files/messagesToInstructor.txt";
@@ -970,8 +1090,144 @@ public void printCompletedProgram() {
 		 return lastResponse != null && !lastResponse.isEmpty();
 	}
 
+	public void selectClient(String clientName) {
+		 boolean clientFound = false;
+	     String filePath= "files/clientPrograms.txt";  
+	        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+	            String line;
+	            while ((line = br.readLine()) != null) {
+	                String[] clientData = line.split(",");
+	                if (clientData.length > 0 && clientData[0].trim().equalsIgnoreCase(clientName)) {
+	                    clientFound = true;
+	                    System.out.println("Client Information:");
+	                    System.out.println("Name: " + clientData[0].trim());
+	                    if (clientData.length > 1) {
+	                        System.out.println("Title: " + clientData[1].trim());
+	                    }
+	                        if (clientData.length > 2) {
+	                        System.out.println("Progress: " + clientData[2].trim());
+	                    }
+	                    if (clientData.length > 3) {
+	                        System.out.println("Tasks Completed: " + clientData[3].trim());
+	                    }
+	                    if (clientData.length > 4) {
+	                        System.out.println("Attendance: " + clientData[4].trim());
+	                    }
+	                    break;
+	                }
+	            }
+	            
+	            if (!clientFound) {
+	                System.out.println("Client with name \"" + clientName + "\" not found in the file.");
+	            }
+	        } catch (IOException e) {
+	            System.err.println("Error reading the clients file: " + e.getMessage());
+	        }
+	    
+		
+	}
+
+	public boolean isTheCompletion(String string, String int1) {
+		boolean clientFound = false;
+		boolean result = false;
+	     String filePath= "files/clientPrograms.txt";  
+	        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+	            String line;
+	            while ((line = br.readLine()) != null) {
+	                String[] clientData = line.split(",");
+	                
+	                if (clientData.length > 2 && clientData[0].trim().equalsIgnoreCase(string)) {
+	                    clientFound = true;
+	                    if (clientData[2].equals(int1)){
+	                            result = true;
+	                            break; // No need to keep checking further lines
+	                        }  
+	            if (!clientFound) {
+	                System.out.println("Client with name \"" + string + "\" not found in the file.");
+	                return false;
+	            }}}}
+	         catch (IOException e) {
+	            System.err.println("Error reading the clients file: " + e.getMessage());
+	        }
+	        
+			return result;
+	    
+	                
+	}
+
+	public void sendReminder(String string, String string2) {
+		 String path = "files/reminderForClients.txt";
+	        String content = string + ", " + string2;
+	        try (BufferedWriter writer = new BufferedWriter(new FileWriter(path, true))) {
+	            writer.write(content);
+	            writer.newLine();
+	            System.out.println("reminder sent successfully.");
+	           
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+		
+	}
 
 	
+
+	public boolean isClient(String string) {
+		boolean clientFound = false;
+		String filePath= "files/clientPrograms.txt"; 
+		 try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+	            String line;
+	            while ((line = br.readLine()) != null) {
+	                String[] clientData = line.split(",");
+	                
+	                if (clientData.length > 2 && clientData[0].trim().equalsIgnoreCase(string)) {
+	                    clientFound = true;
+	                    }
+	            }
+		 }
+	      catch (IOException e) {
+	    	   System.err.println("Error reading the clients file: " + e.getMessage());
+	    	        }
+
+		 	return clientFound;
+	
+
+	}
+
+	public void sendNotificationToClients(String string, String string2) {
+		
+		String filePath= "files/clientPrograms.txt"; 
+		 try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+	            String line;
+	            while ((line = br.readLine()) != null) {
+	                String[] clientData = line.split(",");
+	                
+	                if (clientData.length > 2 && clientData[1].trim().equalsIgnoreCase(string)) {
+	                   
+	                    sendNotification(clientData[0],string2+clientData[1]);
+	                    }
+	                
+	            }
+	           
+		 }
+	      catch (IOException e) {
+	    	   System.err.println("Error reading the clients file: " + e.getMessage());
+	    	        }
+	}
+
+	public void sendNotificationToALLClients(String string, String string2) {
+		String filePath= "files/clients.txt"; 
+		 try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+	            String line;
+	            while ((line = br.readLine()) != null) {
+	                String[] clientData = line.split(",");
+	                sendNotification(clientData[0],string2+clientData[1]);
+	                    }
+	                
+		 }
+	      catch (IOException e) {
+	    	   System.err.println("Error reading the clients file: " + e.getMessage());
+	    	        }
+	}
 
 	
 

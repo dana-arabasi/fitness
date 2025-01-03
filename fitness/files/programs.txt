@@ -1,8 +1,5 @@
-30-Day Full Body Transformation,30 days (45 minutes per day),Intermediate, Improve overall strength and endurance ,path/to/video.mp4,path/to/image.jpg,path/to/document.pdf,$99
-30-Day Full Body Transformation,30 days (45 minutes per day),Intermediate,Improve overall strength and endurance,path/to/video.mp4,path/to/image.jpg,path/to/document.pdf,$99
-30-Day Full Body Transformation,30 days (45 minutes per day),Intermediate,Improve overall strength and endurance,path/to/video.mp4,path/to/image.jpg,path/to/document.pdf,$99
-30-Day Full Body Transformation,30 days (45 minutes per day),Intermediate,Improve overall strength and endurance,path/to/video.mp4,path/to/image.jpg,path/to/document.pdf,$99
-30-Day Full Body Transformation,30 days (45 minutes per day),Intermediate,Improve overall strength and endurance,path/to/video.mp4,path/to/image.jpg,path/to/document.pdf,$99
-30-Day Full Body Transformation,30 days (45 minutes per day),Intermediate,Improve overall strength and endurance,path/to/video.mp4,path/to/image.jpg,path/to/document.pdf,$99
-30-Day Full Body Transformation,30 days (45 minutes per day),Intermediate,Improve overall strength and endurance,path/to/video.mp4,path/to/image.jpg,path/to/document.pdf,$99
- 8-Week Fat Burn Bootcamp,4 weeks (30 minutes per session, 5 sessions per week),Beginner to Intermediate,Build lean muscle, improve flexibility, and boost energy levels,path/to/newvideo.mp4,path/to/newimage.jpg,path/to/newdocument.pdf,
+30-Day Full Body Transformation,duration, difficulty,goals,path/to/video.mp4,path/to/video.mp4,path/to/video.mp4,$30,sessionType,sessionDay,sessionTime
+30-Day Full Body Transformation,duration, difficulty,goals,path/to/video.mp4,path/to/video.mp4,path/to/video.mp4,$30,sessionType,sessionDay,sessionTime
+30-Day Full Body Transformation,duration, difficulty,goals,path/to/video.mp4,path/to/video.mp4,path/to/video.mp4,$30,sessionType,sessionDay,sessionTime
+30-Day Full Body Transformation,duration, difficulty,goals,path/to/video.mp4,path/to/video.mp4,path/to/video.mp4,$30,sessionType,sessionDay,sessionTime
+8-Week Fat Burn Bootcamp,8 weeks (1 hour per session, 4 sessions per week),Advanced,Accelerate fat loss through high-intensity interval training (HIIT),path/to/video.mp4,path/to/image.jpg,path/to/document.pdf,$99,Online,Monday, Wednesday, Friday,6:00 PM - 7:00 PM

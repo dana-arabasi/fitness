@@ -7,9 +7,7 @@ import io.cucumber.junit.CucumberOptions;
 import io.cucumber.junit.CucumberOptions.SnippetType; 
 
 @RunWith(Cucumber .class)
-@CucumberOptions(features="Features/Instructor/ProgressTracking1.feature",
-plugin= {"html:target/cucumber/wikipedia.html"},
-monochrome=true,
+@CucumberOptions(features="Features",
 snippets=SnippetType.CAMELCASE,
 glue= {"fitness"})
 

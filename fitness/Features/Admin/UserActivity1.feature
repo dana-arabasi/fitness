@@ -35,7 +35,7 @@ Feature: User Activity
      Given I am on the admin dashboard
      And I select "1" from the dashboard options
      And I am on the user management page
-    When I select the "2" section
+    When I select the "2" section and user name "leen"
     And I view the user engagement statistics
     Then I should see the engagement statistics, including average session time and interactions with platform features
 

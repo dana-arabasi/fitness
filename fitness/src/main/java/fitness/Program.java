@@ -12,9 +12,12 @@ public class Program {
 	private String imagePath;
 	private String documentPath;
 	private String price;
+	private String sessionType;
+	private String sessionDay;
+	private String sessionTime;
 
 	public Program(String title, String duration, String level, String goals, String videoPath,
-			String imagePath, String documentPath, String price) {
+			String imagePath, String documentPath, String price, String sessionType, String sessionDay, String sessionTime) {
 		this.title=title;
 		this.duration=duration;
 		this.level=level;
@@ -23,6 +26,9 @@ public class Program {
 		this.imagePath=imagePath;
 		this.documentPath=documentPath;
 		this.price=price;
+		this.sessionType=sessionType;
+		this.sessionDay=sessionDay;
+		this.sessionTime=sessionTime;
 		
 		
 	}
@@ -98,5 +104,34 @@ public class Program {
 	public void setPrice(String price) {
 		this.price = price;
 	}
-
+	
+	public String getSessionType() {
+		
+		return sessionType;
+	}
+	
+	public void setSessionType(String sessionType) {
+		this.sessionType = sessionType;
+	}
+	
+	public String getSessionDay() {
+		
+		return sessionDay;
+	}
+	
+	public void setSessionDay(String sessionDay) {
+		this.sessionDay = sessionDay;
+	}
+	
+	public String getSessionTime() {
+		
+		return sessionTime;
+	}
+	
+	public void setSessionTime(String sessionTime) {
+		this.sessionTime = sessionTime;
+	}
+	
+	
+ 
 }

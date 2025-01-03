@@ -8,7 +8,8 @@ import io.cucumber.java.en.When;
 import java.util.ArrayList;
 import java.util.List;
 
-import fittness.ProgramCatalog.Program;
+import fitness.ProgramCatalog;
+import fitness.ProgramCatalog.Programs;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -20,7 +21,7 @@ public class ProgramExplorationAndEnrollment_test {
 	
     
 	  private ProgramCatalog programCatalog = new ProgramCatalog();
-	    private List<ProgramCatalog.Program> filteredPrograms;
+	    private List<ProgramCatalog.Programs> filteredPrograms;
 	    private String message;
 	    private String userId = "user123";
 
@@ -43,8 +44,8 @@ public class ProgramExplorationAndEnrollment_test {
 	    public void theProgramsShouldBeFilteredAccordingToTheSelectedDifficultyLevel() {
 	    	boolean allMatch = true;
 	        
-	        for (Program p : filteredPrograms) {
-	            if (!"Beginner".equals(p.getLevel())) {
+	        for (Programs p : filteredPrograms) {
+	            if (!"Beginner".equals(p.getDifficulty())) {
 	                allMatch = false;
 	                break;
 	            }
@@ -62,7 +63,7 @@ public class ProgramExplorationAndEnrollment_test {
 	    public void theProgramsShouldBeFilteredAccordingToTheSelectedFocusArea() {
 	    	boolean allMatch = true;
 
-	        for (Program p : filteredPrograms) {
+	        for (Programs p : filteredPrograms) {
 	            if (!"Muscle Building".equals(p.getFocusArea())) {
 	                allMatch = false;
 	                break;
@@ -82,7 +83,7 @@ public class ProgramExplorationAndEnrollment_test {
 	        filteredPrograms = programCatalog.filterPrograms("Intermediate", "Flexibility");
 	        boolean allMatch = true;
 
-	        for (Program p : filteredPrograms) {
+	        for (Programs p : filteredPrograms) {
 	            if (!"Intermediate".equals(p.getDifficulty()) || !"Flexibility".equals(p.getFocusArea())) {
 	                allMatch = false;
 	                break;
@@ -106,7 +107,7 @@ public class ProgramExplorationAndEnrollment_test {
 	    public void theProgramsShouldUpdateAccordingToTheNewlySelectedDifficultyLevel() {
 	    	boolean allMatch = true;
 
-	        for (Program p : filteredPrograms) {
+	        for (Programs p : filteredPrograms) {
 	            if (!"Advanced".equals(p.getDifficulty())) {
 	                allMatch = false;
 	                break;
@@ -155,7 +156,7 @@ public class ProgramExplorationAndEnrollment_test {
 	    public void theUserClicksOnTheEnrollButton(String buttonName) {
 	    	 if (buttonName.equals("Enroll Now")) {
 	    	        // Ensure that the correct program is passed for enrollment
-	    	        Program selectedProgram = programCatalog.getProgramByName("Weightlifting for Beginners");
+	    	        Programs selectedProgram = programCatalog.getProgramByName("Weightlifting for Beginners");
 	    	        if (selectedProgram != null) {
 	    	            // Debugging log to confirm program details
 	    	            System.out.println("Enrolling user in program: " + selectedProgram.getName());
@@ -205,7 +206,7 @@ public class ProgramExplorationAndEnrollment_test {
 
 	    @Then("the user should see detailed information about the program, including duration, goals, and schedule")
 	    public void theUserShouldSeeDetailedInformationAboutTheProgramIncludingDurationGoalsAndSchedule() {
-	        ProgramCatalog.Program program = programCatalog.getPrograms().get(0);
+	        ProgramCatalog.Programs program = programCatalog.getPrograms().get(0);
 	        assertNotNull(program.getDuration());
 	        assertNotNull(program.getDescription());
 	    }

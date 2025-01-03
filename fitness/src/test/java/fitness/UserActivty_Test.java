@@ -2,6 +2,9 @@ package fitness;
 
 import static org.junit.Assert.assertTrue;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -15,13 +18,18 @@ public class UserActivty_Test {
 	}
 
 	@When("I select the {string} section")
-	public void i_select_the_section(String string) {
-		 app.selectSection(string);
+	public void i_select_the_section(String string) throws FileNotFoundException, IOException {
+		 app.selectSection(string,"");
 	}
 
 	@Then("I should see an overview of user activity, including total logins, and active users")
 	public void i_should_see_an_overview_of_user_activity_including_total_logins_and_active_users() {
 	   assertTrue(true);
+	}
+	@When("I select the {string} section and user name {string}")
+	public void iSelectTheSectionAndUserName(String string, String string2) throws FileNotFoundException, IOException {
+		 app.selectSection(string,string2);
+	    
 	}
 
 	@When("I view the user engagement statistics")
