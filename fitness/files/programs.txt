@@ -1,3 +1,6 @@
+lose wight program,3 weeks,Intermediate,weight loss,path/vedio.mp4,path/image.jpg,path/doc.pdf,$20,online,sunday/monday,10:00 AM-12:00 AM
+30-Day Full Body Transformation,duration, difficulty,goals,path/to/video.mp4,path/to/video.mp4,path/to/video.mp4,$30,sessionType,sessionDay,sessionTime
+30-Day Full Body Transformation,duration, difficulty,goals,path/to/video.mp4,path/to/video.mp4,path/to/video.mp4,$30,sessionType,sessionDay,sessionTime
 30-Day Full Body Transformation,duration, difficulty,goals,path/to/video.mp4,path/to/video.mp4,path/to/video.mp4,$30,sessionType,sessionDay,sessionTime
 30-Day Full Body Transformation,duration, difficulty,goals,path/to/video.mp4,path/to/video.mp4,path/to/video.mp4,$30,sessionType,sessionDay,sessionTime
 30-Day Full Body Transformation,duration, difficulty,goals,path/to/video.mp4,path/to/video.mp4,path/to/video.mp4,$30,sessionType,sessionDay,sessionTime

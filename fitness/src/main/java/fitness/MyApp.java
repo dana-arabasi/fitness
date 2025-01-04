@@ -1220,7 +1220,7 @@ public void printCompletedProgram() {
 	            String line;
 	            while ((line = br.readLine()) != null) {
 	                String[] clientData = line.split(",");
-	                sendNotification(clientData[0],string2+clientData[1]);
+	                sendNotification(clientData[0],string2);
 	                    }
 	                
 		 }
