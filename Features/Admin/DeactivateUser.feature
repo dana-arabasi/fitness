@@ -26,6 +26,6 @@ Background:
     Given I am on the admin dashboard
     And I select "1" from the dashboard options
     And I am on the user management page
-    When I choose to Deactivate the user with username "Tayma"
+    When I choose to Deactivate the user with username "ahmad"
     Then I should see all users in the list
     And I should see a success message "User Deactivated successfully."
