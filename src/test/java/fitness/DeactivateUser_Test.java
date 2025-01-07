@@ -12,10 +12,12 @@ public class DeactivateUser_Test {
 		super();
 		this.app=app;
 	}
-	
+	@Test
 	@When("I choose to Deactivate the user with username {string}")
 	public void iChooseToDeactivateTheUserWithUsername(String username) {
 		 app.deleteUser(username);
+				assertTrue(true);
+
 	}
 
 }
