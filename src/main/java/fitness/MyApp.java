@@ -403,10 +403,10 @@ public class MyApp {
 	                return;
 	            }
 	        }
-	        for (Admin adminUser : admin) {
-	            if (adminUser.getUsername().equals(oldUsername)) {
-	                adminUser.setUsername(newUsername);
-	                adminUser.setPassword(newPassword);
+	        for (Admin Admin : admin) {
+	            if (Admin.getUsername().equals(oldUsername)) {
+	            	Admin.setUsername(newUsername);
+	            	Admin.setPassword(newPassword);
 	                rewriteFile("files/admin.txt", admin);
 	                System.out.println("Admin updated successfully!");
 	                String message = "User updated successfully.";
@@ -658,45 +658,60 @@ private void getProfitReports() throws FileNotFoundException, IOException {
 
 
 private void getMostPopularPrograms() throws FileNotFoundException, IOException {
-	String programsFile = "files/programs.txt";
+    String programsFile = "files/programs.txt";
     String clientsFile = "files/clientPrograms.txt";
     String outputFile = "files/mostpopularprograms.txt";
-    
+
     Map<String, Integer> clientCounts = new HashMap<>();
-    Map<String, String> programPrices = new HashMap<>();
-    
+    Map<String, Double> programPrices = new HashMap<>();
+
     try {
         // Read programs file and store program prices
-        BufferedReader programsReader = new BufferedReader(new FileReader(programsFile));
-        String line;
-        programsReader.readLine(); // Skip header
-        while ((line = programsReader.readLine()) != null) {
-            String[] parts = line.split(",");
-            if (parts.length == 11) {
-                programPrices.put(parts[0], parts[7]); // Title -> Price
-                clientCounts.put(parts[0], 0); // Initialize client count
+        try (BufferedReader programsReader = new BufferedReader(new FileReader(programsFile))) {
+            String line;
+            programsReader.readLine(); // Skip header
+            while ((line = programsReader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length == 11) {
+                    String title = parts[0];
+                    String priceStr = parts[7];
+                    double price = 0.0;
+
+                    if (priceStr != null && !priceStr.isEmpty() && !priceStr.equalsIgnoreCase("N/A")) {
+                        try {
+                            price = Double.parseDouble(priceStr);
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid price value for program: " + title + " -> " + priceStr);
+                        }
+                    }
+
+                    programPrices.put(title, price); // Title -> Price
+                    clientCounts.put(title, 0); // Initialize client count
+                }
             }
         }
-        programsReader.close();
 
         // Read clients file and count clients per program
-        BufferedReader clientsReader = new BufferedReader(new FileReader(clientsFile));
-        clientsReader.readLine(); // Skip header
-        while ((line = clientsReader.readLine()) != null) {
-            String[] parts = line.split(",");
-            if (parts.length == 5) {
-                String programTitle = parts[1];
-                clientCounts.put(programTitle, clientCounts.getOrDefault(programTitle, 0) + 1);
+        try (BufferedReader clientsReader = new BufferedReader(new FileReader(clientsFile))) {
+            String line;
+            clientsReader.readLine(); // Skip header
+            while ((line = clientsReader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length == 5) {
+                    String programTitle = parts[1];
+                    clientCounts.put(programTitle, clientCounts.getOrDefault(programTitle, 0) + 1);
+                }
             }
         }
-        clientsReader.close();
-        BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile));
-        for (String title : clientCounts.keySet()) {
-            String price = programPrices.getOrDefault(title, "N/A");
-            int count = clientCounts.get(title);
-            writer.write(title + "," + count + "," + price + "\n");
+
+        // Write results to the output file
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile))) {
+            for (String title : clientCounts.keySet()) {
+                double price = programPrices.getOrDefault(title, 0.0);
+                int count = clientCounts.get(title);
+                writer.write(title + "," + count + "," + price + "\n");
+            }
         }
-        writer.close();
 
         System.out.println("Results written to " + outputFile);
 
@@ -704,28 +719,35 @@ private void getMostPopularPrograms() throws FileNotFoundException, IOException 
         System.out.println("Error: " + e.getMessage());
     }
 
+    // Determine the most popular program
+    try (BufferedReader br = new BufferedReader(new FileReader(outputFile))) {
+        String line;
+        int highestSales = 0;
+        String mostPopularProgram = "";
 
-      
-	try (BufferedReader br = new BufferedReader(new FileReader("files/mostpopularprograms.txt"))) {
-	   String line;
-       int quantity = 0;
-       String name = "";
-       while ((line = br.readLine()) != null) {
-           String[] parts = line.split(",");
-           if (parts.length == 3) {
-               String productname = parts[0];
-               String quan = parts[1];
-               if (quantity < Integer.parseInt(quan)) {
-                   quantity = Integer.parseInt(quan);
-                   name = productname;
-               }
-           }
-       }
-       System.out.println("The highest number of sales: " + quantity);
-       System.out.println("The most popular programs is: " + name);
-   }
-	
+        while ((line = br.readLine()) != null) {
+            String[] parts = line.split(",");
+            if (parts.length == 3) {
+                String productName = parts[0];
+                String quantityStr = parts[1];
+
+                try {
+                    int quantity = Integer.parseInt(quantityStr.trim());
+                    if (quantity > highestSales) {
+                        highestSales = quantity;
+                        mostPopularProgram = productName;
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid quantity value: " + quantityStr + " for product: " + productName);
+                }
+            }
+        }
+
+        System.out.println("The highest number of sales: " + highestSales);
+        System.out.println("The most popular program is: " + mostPopularProgram);
+    }
 }
+
 
 public void getProgramActivity() throws FileNotFoundException, IOException {
 	try (BufferedReader br = new BufferedReader(new FileReader("files/programs.txt"))) {
