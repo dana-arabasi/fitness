@@ -22,6 +22,7 @@ public class ProgressTracking {
 	
 	@Given("the user is on their progress tracking page")
 	public void theUserIsOnTheirProgressTrackingPage() {
+		progressTracker.hasAchievements();
 		// No action needed
 	}
 
