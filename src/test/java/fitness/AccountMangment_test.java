@@ -39,6 +39,8 @@ public class AccountMangment_test {
     	    client.setPassword("0000");
     	    client.setisBasic(true);
     	    client.setisPremium(false);
+	    client.getisBasic();
+    	    client.getisPremium();
     }
 
     @When("the user submits the form")
