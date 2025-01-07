@@ -36,6 +36,7 @@ public class ContentManagement_Test {
 	@When("I select Delete  and enter recipe name {string}")
 	public void i_select_delete_and_enter_recipe_name(String programname) {
 		app.contentmanagement.deleteRecipes(programname);
+		app.contentmanagement.findUsername("ahmad","");
 				assertTrue(true);
 
 	}
