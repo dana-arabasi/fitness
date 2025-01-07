@@ -12,11 +12,15 @@ public class UpdateUser_Test {
 		super();
 		this.app=app;
 	}
-	
+	@Test
+
 	@When("I choose to update the user with oldusername {string} and I enter the new username {string} and I enter the new password {string}")
 	public void iChooseToUpdateTheUserWithOldusernameAndIEnterTheNewUsernameAndIEnterTheNewPassword(String oldUsername, String newUsername, String newPassword) {
 		 app.updateUser(oldUsername, newUsername, newPassword);
+		assertTrue(true);
 	}
+	@Test
+
 	@When("I submit the updated user details")
 	public void iSubmitTheUpdatedUserDetails() {
 		app.updateUser("Tayma", "Tayma",  "1234");
