@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 public class MyApp {
 
@@ -25,7 +26,7 @@ public class MyApp {
 	private static final String FILE_InstructorReg= "files/instructorsreg.txt";
     private static final String  loginHistoryFile= "files/login.txt";
     private String filePath = "";
-	public boolean isUserLoggedIn;
+	public boolean boolisUserLoggedIn;
 	 public boolean isSignedUp;
 	private boolean AdminLoggedIn;
 	public ArrayList<Admin> admin;
@@ -70,7 +71,6 @@ public class MyApp {
     public boolean contentManagementPageOpen;
     public boolean reportShown;
     public ContentManagement contentmanagement;
-	
 	private boolean isInstructorListVisible;
 	private int totalLogins=0;
 	private int loginCount=0;
@@ -93,7 +93,9 @@ public class MyApp {
 	        this.instructorsreg= new ArrayList<>();
 	        this.activeprograms=new ArrayList<>();
 	        this.compprograms=new ArrayList<>();
-	        
+	        this.isInstructorListVisible=false;
+	        this.subscriptionmanagementpageOpen=false;
+	        this.programMonitoringPageOpen=false;
 	        loadData(FILE_CLIENT, "Client");
 	        loadData(FILE_INSTRUCTOR, "Instructor");
 	        loadData(FILE_ADMIN, "Admin");
@@ -210,7 +212,7 @@ public class MyApp {
 	private boolean loginAdmin(String username, String password) {
 		 for (Admin a : admin) {
 	            if (a.getUsername().equals(username) && a.getPassword().equals(password)) {
-	                isUserLoggedIn = true;
+	            	boolisUserLoggedIn = true;
 	                AdminLoggedIn = true;
 	                return true;
 	            }
@@ -221,7 +223,7 @@ public class MyApp {
 	private boolean loginInstructor(String username, String password) {
 		for (Instructor a : instructors) {
             if (a.getUsername().equals(username) && a.getPassword().equals(password)) {
-                isUserLoggedIn = true;
+            	boolisUserLoggedIn = true;
                 InstructorLoggedIn = true;
                 return true;
             }
@@ -232,7 +234,7 @@ public class MyApp {
 	private boolean loginClient(String username, String password) {
 		for (Client a : clients) {
             if (a.getUsername().equals(username) && a.getPassword().equals(password)) {
-                isUserLoggedIn = true;
+            	boolisUserLoggedIn = true;
                 clientLoggedIn = true;
                 return true;
             }
@@ -511,6 +513,7 @@ public void selectSection(String string, String string2) throws FileNotFoundExce
 	switch(string) {
 	case "1":
 		displayUserActivity();
+		break;
 	case "2":
 		displayEngagementStatistics(string2);
 		break;
@@ -543,15 +546,14 @@ private void displayEngagementStatistics(String string2) throws FileNotFoundExce
 
 
 private void displayUserActivity() {
-	System.out.println("Total logins: " + totalLogins);
-	try {
+
+	
 		System.out.println("login History: " );
-       java.nio.file.Files.lines(java.nio.file.Paths.get(loginHistoryFile))
-           .forEach(System.out::println); // Print each line from the file
-   } catch (IOException e) {
-       System.out.println("Error reading the login history file.");
-       e.printStackTrace();
-   }
+		 try (Stream<String> lines = java.nio.file.Files.lines(java.nio.file.Paths.get(loginHistoryFile))) {
+		        lines.forEach(System.out::println);
+		    } catch (IOException e) {
+		        System.err.println("Error reading login history: " + e.getMessage());
+		    }
 	
 }
 
@@ -669,7 +671,7 @@ private void getMostPopularPrograms() throws FileNotFoundException, IOException 
         // Read programs file and store program prices
         try (BufferedReader programsReader = new BufferedReader(new FileReader(programsFile))) {
             String line;
-            programsReader.readLine(); // Skip header
+          
             while ((line = programsReader.readLine()) != null) {
                 String[] parts = line.split(",");
                 if (parts.length == 11) {
@@ -694,7 +696,7 @@ private void getMostPopularPrograms() throws FileNotFoundException, IOException 
         // Read clients file and count clients per program
         try (BufferedReader clientsReader = new BufferedReader(new FileReader(clientsFile))) {
             String line;
-            clientsReader.readLine(); // Skip header
+           
             while ((line = clientsReader.readLine()) != null) {
                 String[] parts = line.split(",");
                 if (parts.length == 5) {
@@ -1280,32 +1282,35 @@ public void printCompletedProgram() {
 	}
 
 	public boolean isTheCompletion(String string, String int1) {
-		boolean clientFound = false;
-		boolean result = false;
-	     String filePath= "files/clientPrograms.txt";  
-	        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-	            String line;
-	            while ((line = br.readLine()) != null) {
-	                String[] clientData = line.split(",");
-	                
-	                if (clientData.length > 2 && clientData[0].trim().equalsIgnoreCase(string)) {
-	                    clientFound = true;
-	                    if (clientData[2].equals(int1)){
-	                            result = true;
-	                            break; // No need to keep checking further lines
-	                        }  
-	            if (!clientFound) {
-	                System.out.println("Client with name \"" + string + "\" not found in the file.");
-	                return false;
-	            }}}}
-	         catch (IOException e) {
-	            System.err.println("Error reading the clients file: " + e.getMessage());
+	    boolean clientFound = false;
+	    boolean result = false;
+	    String filePath = "files/clientPrograms.txt";  
+	    
+	    try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+	        String line;
+	        
+	        while ((line = br.readLine()) != null) {
+	            String[] clientData = line.split(",");	                
+	            if (clientData.length > 2 && clientData[0].trim().equalsIgnoreCase(string)) {
+	                clientFound = true;
+	                if (clientData[2].trim().equals(int1)) {
+	                    result = true;
+	                    break; // Found the client with matching condition
+	                }
+	            }
 	        }
 	        
-			return result;
+	        // After reading all lines, check if client was found
+	        if (!clientFound) {
+	            System.out.println("Client with name \"" + string + "\" not found in the file.");
+	        }
+	    } catch (IOException e) {
+	        System.err.println("Error reading the clients file: " + e.getMessage());
+	    }
 	    
-	                
+	    return result;
 	}
+
 
 	public void sendReminder(String string, String string2) {
 		 String path = "files/reminderForClients.txt";
