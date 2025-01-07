@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Client {
-	private String currentUsername;
-	private MyApp app;
 	private String userName;
 	private String password;
 	private boolean isBasic;
@@ -25,10 +23,7 @@ public class Client {
 			 isBasic=true;
 			 isPremium=false;
 	}
-	public void setApp(MyApp app) {
-	        this.app = app;
-	        this.currentUsername = app.getCurrentUsername(); // Set current username from app
-	    }
+	
 
 	public String getUsername() {
 				return userName;
