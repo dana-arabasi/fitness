@@ -34,10 +34,10 @@ Feature: Instructor Registration
      Given I am on the admin dashboard
      And I select "1" from the dashboard options
      And I am on the user management page
-    And the instructor with name "tayma" is in the pending registrations list
-    When I select the instructor with name "tayma" to approve
+    And the instructor with name "amjad" is in the pending registrations list
+    When I select the instructor with name "amjad" to approve
     And I confirm the approval
-    Then the instructor registration with name "tayma" should be approved successfully
+    Then the instructor registration with name "amjad" should be approved successfully
      And I should see a success message "The instructor approved successfully."
 
     
@@ -46,8 +46,8 @@ Feature: Instructor Registration
     Given I am on the admin dashboard
      And I select "1" from the dashboard options
      And I am on the user management page
-    And the instructor with name "tayma" is in the pending registrations list
-    When I select the instructor with name "tayma" to reject
+    And the instructor with name "ahmad" is in the pending registrations list
+    When I select the instructor with name "ahmad" to reject
     And I confirmVthe rejection
-    Then the instructor with name "tayma" registration should be rejected
+    Then the instructor with name "ahmad" registration should be rejected
     And I should see a success message "The instructor rejected successfully."
