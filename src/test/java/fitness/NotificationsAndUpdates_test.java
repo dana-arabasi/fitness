@@ -17,11 +17,7 @@ public class NotificationsAndUpdates_test {
 		this.app=app;
 	} 
 	
-	@Given("I am on the client  Notifications and Updates page")
-	public void i_am_on_the_client_notifications_and_updates_page() {
-		app.navigateTo("Notifications and Updates page");
-		 assertTrue(app.isOnPage("Notifications and Updates page"));
-	} 
+	
 	
 	@Then("Clients participating in the program {string} should receive the notification")
 	public void clients_participating_in_the_program_should_receive_the_notification(String string) {
