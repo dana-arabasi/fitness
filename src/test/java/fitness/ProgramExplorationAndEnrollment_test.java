@@ -38,6 +38,7 @@ public class ProgramExplorationAndEnrollment_test {
 	    @When("the user selects a difficulty level filter {string}")
 	    public void theUserSelectsADifficultyLevelFilter(String difficulty) {
 	        filteredPrograms = programCatalog.filterPrograms(difficulty, null);
+		    programCatalog.getProgramByName("Weightlifting for Beginners");
 	    }
 
 	    @Then("the programs should be filtered according to the selected difficulty level")
