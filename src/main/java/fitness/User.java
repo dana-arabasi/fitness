@@ -12,7 +12,7 @@ public class User {
         this.id = null;
     }
     
-    // Getters and Setters
+
     public int getAge() {
         return age;
     }
@@ -47,18 +47,18 @@ public class User {
     }
 
 
-    // Method to create an account
+    
     public String createAccount() {
         if (age <= 0) {
-          //  System.out.println("Debug: Invalid age detected");
+          
             return "Invalid age.";
         }
         if (fitnessGoals == null || fitnessGoals.isEmpty()) {
-           // System.out.println("Debug: Invalid fitness goals detected");
+          
             return "Invalid fitness goals.";
         }
         if (dietaryPreferences == null || dietaryPreferences.isEmpty()) {
-            //System.out.println("Debug: Invalid dietary preferences detected");
+          
             return "Invalid dietary preferences.";
         }
         this.id = generateId();
@@ -66,37 +66,37 @@ public class User {
     }
 
     private Object generateId() {
-		// TODO Auto-generated method stub
+		
     	return (int) (Math.random() * 10000);
 	}
 
-	// Method to update dietary preferences
+	
     public String updateDietaryPreferences() {
         if (dietaryPreferences == null || dietaryPreferences.isEmpty()) {
-            //System.out.println("Debug: Invalid dietary preferences detected");
+            
             return "Invalid dietary preferences.";
         }
         return "Dietary preferences updated successfully!";
     }
 
 	public void deleteAccount() {
-		// TODO Auto-generated method stub
+		
 		 isDeleted = true;
 		 logout();
 		
 	}
 
 	public String confirmDeleteAccount() {
-		// TODO Auto-generated method stub
+		
 		if (isDeleted) {
-            return "Account deleted successfully.";  // Return success message
+            return "Account deleted successfully.";  
         } else {
-            return "Account deletion failed.";  // In case account isn't deleted
+            return "Account deletion failed."; 
         }
 	}
 
 	public boolean isDeleted() {
-		// TODO Auto-generated method stub
+		
 		return isDeleted;
 	}
 	
@@ -105,7 +105,7 @@ public class User {
 	    }
 
 	public boolean isLoggedOut() {
-		// TODO Auto-generated method stub
+		
 		 return isLoggedOut;
 	}
 
