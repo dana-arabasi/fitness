@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FeedbackSystem {
-	 private Map<String, Feedback> programFeedback = new HashMap<String, Feedback>();
+	private Map<String, Feedback> programFeedback = new HashMap<>();
 
 	    // Submit Feedback
 	    public void submitFeedback(String programId, String feedback, boolean isAnonymous) {
