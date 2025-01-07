@@ -27,6 +27,12 @@ public class MyApp {
 	private static final String FILE_InstructorReg= "files/instructorsreg.txt";
     private static final String  loginHistoryFile= "files/login.txt";
     private String filePath = "";
+	 private static final String PROGRAMS_FILE = "files/programs.txt";
+    private static final String CLIENTS_FILE = "files/clientPrograms.txt";
+    private static final String OUTPUT_FILE = "files/mostpopularprograms.txt";
+    
+    private Map<String, Integer> clientCounts = new HashMap<>();
+    private Map<String, Double> programPrices = new HashMap<>();
 	
 	 private boolean isSignedUp;
 	private boolean AdminLoggedIn;
@@ -657,97 +663,109 @@ private void getProfitReports() throws FileNotFoundException, IOException {
 }
 
 
-private void getMostPopularPrograms() throws FileNotFoundException, IOException {
-    String programsFile = "files/programs.txt";
-    String clientsFile = "files/clientPrograms.txt";
-    String outputFile = "files/mostpopularprograms.txt";
+ public void getMostPopularPrograms() throws IOException {
+        readProgramsFile();
+        readClientsFile();
+        writeResultsToFile();
+        String mostPopularProgram = determineMostPopularProgram();
+        System.out.println("The most popular program is: " + mostPopularProgram);
+    }
 
-    Map<String, Integer> clientCounts = new HashMap<>();
-    Map<String, Double> programPrices = new HashMap<>();
-
-    try {
-        // Read programs file and store program prices
-        try (BufferedReader programsReader = new BufferedReader(new FileReader(programsFile))) {
+    private void readProgramsFile() {
+        try (BufferedReader reader = new BufferedReader(new FileReader(PROGRAMS_FILE))) {
             String line;
-          
-            while ((line = programsReader.readLine()) != null) {
-                String[] parts = line.split(",");
-                if (parts.length == 11) {
-                    String title = parts[0];
-                    String priceStr = parts[7];
-                    double price = 0.0;
+            while ((line = reader.readLine()) != null) {
+                processProgramLine(line);
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading programs file: " + e.getMessage());
+        }
+    }
 
-                    if (priceStr != null && !priceStr.isEmpty() && !priceStr.equalsIgnoreCase("N/A")) {
-                        try {
-                            price = Double.parseDouble(priceStr);
-                        } catch (NumberFormatException e) {
-                            System.out.println("Invalid price value for program: " + title + " -> " + priceStr);
-                        }
-                    }
+    private void processProgramLine(String line) {
+        String[] parts = line.split(",");
+        if (parts.length == 11) {
+            String title = parts[0];
+            double price = parsePrice(parts[7]);
+            programPrices.put(title, price);
+            clientCounts.put(title, 0); // Initialize client count
+        }
+    }
 
-                    programPrices.put(title, price); // Title -> Price
-                    clientCounts.put(title, 0); // Initialize client count
-                }
+    private double parsePrice(String priceStr) {
+        if (priceStr != null && !priceStr.isEmpty() && !priceStr.equalsIgnoreCase("N/A")) {
+            try {
+                return Double.parseDouble(priceStr);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid price value: " + priceStr);
             }
         }
+        return 0.0;
+    }
 
-        // Read clients file and count clients per program
-        try (BufferedReader clientsReader = new BufferedReader(new FileReader(clientsFile))) {
+    private void readClientsFile() {
+        try (BufferedReader reader = new BufferedReader(new FileReader(CLIENTS_FILE))) {
             String line;
-           
-            while ((line = clientsReader.readLine()) != null) {
-                String[] parts = line.split(",");
-                if (parts.length == 5) {
-                    String programTitle = parts[1];
-                    clientCounts.put(programTitle, clientCounts.getOrDefault(programTitle, 0) + 1);
-                }
+            while ((line = reader.readLine()) != null) {
+                processClientLine(line);
             }
+        } catch (IOException e) {
+            System.out.println("Error reading clients file: " + e.getMessage());
         }
+    }
 
-        // Write results to the output file
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile))) {
+    private void processClientLine(String line) {
+        String[] parts = line.split(",");
+        if (parts.length == 5) {
+            String programTitle = parts[1];
+            clientCounts.put(programTitle, clientCounts.getOrDefault(programTitle, 0) + 1);
+        }
+    }
+
+    private void writeResultsToFile() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(OUTPUT_FILE))) {
             for (String title : clientCounts.keySet()) {
                 double price = programPrices.getOrDefault(title, 0.0);
                 int count = clientCounts.get(title);
                 writer.write(title + "," + count + "," + price + "\n");
             }
+        } catch (IOException e) {
+            System.out.println("Error writing results to file: " + e.getMessage());
         }
-
-        System.out.println("Results written to " + outputFile);
-
-    } catch (IOException e) {
-        System.out.println("Error: " + e.getMessage());
     }
 
-    // Determine the most popular program
-    try (BufferedReader br = new BufferedReader(new FileReader(outputFile))) {
-        String line;
-        int highestSales = 0;
+    private String determineMostPopularProgram() {
         String mostPopularProgram = "";
-
-        while ((line = br.readLine()) != null) {
-            String[] parts = line.split(",");
-            if (parts.length == 3) {
-                String productName = parts[0];
-                String quantityStr = parts[1];
-
-                try {
-                    int quantity = Integer.parseInt(quantityStr.trim());
+        int highestSales = 0;
+        
+        try (BufferedReader reader = new BufferedReader(new FileReader(OUTPUT_FILE))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length == 3) {
+                    String productName = parts[0];
+                    int quantity = parseQuantity(parts[1]);
                     if (quantity > highestSales) {
                         highestSales = quantity;
                         mostPopularProgram = productName;
                     }
-                } catch (NumberFormatException e) {
-                    System.out.println("Invalid quantity value: " + quantityStr + " for product: " + productName);
                 }
             }
+        } catch (IOException e) {
+            System.out.println("Error reading output file: " + e.getMessage());
         }
-
-        System.out.println("The highest number of sales: " + highestSales);
-        System.out.println("The most popular program is: " + mostPopularProgram);
+        
+        return mostPopularProgram;
     }
-}
 
+    private int parseQuantity(String quantityStr) {
+        try {
+            return Integer.parseInt(quantityStr.trim());
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid quantity value: " + quantityStr);
+            return 0;
+        }
+    }
 
 public void getProgramActivity() throws FileNotFoundException, IOException {
 	try (BufferedReader br = new BufferedReader(new FileReader("files/programs.txt"))) {
