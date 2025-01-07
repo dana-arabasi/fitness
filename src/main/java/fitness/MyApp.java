@@ -70,7 +70,7 @@ public class MyApp {
     public boolean contentManagementPageOpen;
     public boolean reportShown;
     public ContentManagement contentmanagement;
-	private boolean ClientLoggedIn;
+	
 	private boolean isInstructorListVisible;
 	private int totalLogins=0;
 	private int loginCount=0;
