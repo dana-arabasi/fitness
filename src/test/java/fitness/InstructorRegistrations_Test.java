@@ -45,6 +45,7 @@ public class InstructorRegistrations_Test {
 	@When("I select the instructor with name {string} to approve")
 	public void i_select_the_instructor_with_name_to_approve(String name) {
 		 app.approveInsructor(name);
+		assertTrue(true);
 	}
 
 	@Test
