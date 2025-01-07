@@ -32,7 +32,7 @@ Scenario: View all recipes
     Given I am on the admin dashboard
     And I select "3" from the dashboard options
     And I am on the content management page
-    When  I select Delete  and enter recipe name "cookies"
+    When  I select Delete  and enter recipe name "30-Day Full Body Transformation"
     Then I should see a success message "Recipe deleted successfully."
     And I submit and should see the all recipes in the list after deleted
     And return back to the content management page
@@ -43,6 +43,14 @@ Scenario: View all recipes
     And I select "3" from the dashboard options
     And I am on the content management page
     When I select Respond feedback and enter username "ahmad" and write response message "thank you bro"
+    Then I should see a success message "response send  successfully."   
+    And return back to the content management page
+    
+    Scenario: response to users feedback
+    Given I am on the admin dashboard
+    And I select "3" from the dashboard options
+    And I am on the content management page
+    When I select Respond feedback and enter username "ali" and write response message "thank you bro"
     Then I should see a success message "response send  successfully."   
     And return back to the content management page
 
@@ -59,7 +67,7 @@ Scenario: View all recipes
     Given I am on the admin dashboard
     And I select "3" from the dashboard options
     And I am on the content management page
-    When I select Delete feedback and enter username "ahmad"
+    When I select Delete feedback and enter username "ali"
     Then I should see a success message "feedback deleted successfully."
     And I should see all feedbacks 
     And return back to the content management page
