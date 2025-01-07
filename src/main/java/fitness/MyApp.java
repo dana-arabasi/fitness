@@ -486,33 +486,27 @@ public class MyApp {
        }
        return result; // Instructor not found
    }
-public void approveInsructor(String name) {
-	for (Instructor instructorreg : instructorsreg) {
-       if (instructorreg.getUsername().equals(name)) {
-       	instructors.add(instructorreg);
-       	instructorsreg.remove(instructorreg);
-       	 rewriteFile("files/instructors.txt", instructors);
-       	 rewriteFile("files/instructorsreg.txt", instructorsreg);
-       }
-		
-		
-	} 
-	
-}
+public void approveInstructor(String name) {
+	    instructorsreg.removeIf(instructorreg -> {
+	        if (instructorreg.getUsername().equals(name)) {
+	            instructors.add(instructorreg);
+	            rewriteFile("files/instructors.txt", instructors);
+	            rewriteFile("files/instructorsreg.txt", instructorsreg);
+	            return true; // Remove this instructor
+	        }
+	        return false;
+	    });
+	}
 
-public void rejectInstructor(String name) {
-	for (Instructor instructor : instructorsreg) {
-       if (instructor.getUsername().equals(name)) {
-       	instructorsreg.remove(instructor);
-       	rewriteFile("files/instructorsreg.txt", instructorsreg);
-       }
-		
-		
-	} 
-	 
-	
-}
-
+	public void rejectInstructor(String name) {
+	    boolean removed = instructorsreg.removeIf(instructorreg -> instructorreg.getUsername().equals(name));
+	    if (removed) {
+	        rewriteFile("files/instructorsreg.txt", instructorsreg);
+	        System.out.println("Instructor " + name + " has been rejected.");
+	    } else {
+	        System.out.println("Instructor " + name + " not found in the list.");
+	    }
+	}
 public void selectSection(String string, String string2) throws FileNotFoundException, IOException {
 	switch(string) {
 	case "1":
