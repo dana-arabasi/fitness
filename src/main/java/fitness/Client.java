@@ -8,7 +8,7 @@ public class Client {
 	private String password;
 	private boolean isBasic;
 	private boolean isPremium;
-	 private List<String> dashboardOptions;
+	
 
 	
 	public Client() {
