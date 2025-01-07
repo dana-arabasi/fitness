@@ -92,7 +92,7 @@ public class ContentManagement {
 		
 	}
 
-	private String findUsername(String string, String filePath) {
+	public String findUsername(String string, String filePath) {
 		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             return reader.lines()
                 .filter(line -> line.startsWith(string + ","))
