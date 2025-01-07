@@ -74,6 +74,19 @@
                             <goal>report</goal>
                         </goals>
                     </execution>
+                    <execution>
+                        <id>report-aggregate</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>report-aggregate</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/jacoco-aggregate</outputDirectory>
+                            <reports>
+                                <report>xml</report>
+                            </reports>
+                        </configuration>
+                    </execution>
                 </executions>
                 <configuration>
                     <destFile>${project.build.directory}/jacoco.exec</destFile>
@@ -101,5 +114,12 @@
         <sonar.organization>fitness2025</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+        <sonar.sources>src/main/java</sonar.sources>
+        <sonar.tests>src/test/java</sonar.tests>
+        <sonar.test.inclusions>*/*Test.java,*/*Tests.java</sonar.test.inclusions>
+        <sonar.coverage.exclusions>*/src/test/, */resources/**</sonar.coverage.exclusions>
+        <sonar.junit.reportPaths>${project.build.directory}/surefire-reports</sonar.junit.reportPaths>
+        <sonar.inclusions>*/.java</sonar.inclusions>
+        <sonar.coverage.branch>true</sonar.coverage.branch>
     </properties>
 </project>
