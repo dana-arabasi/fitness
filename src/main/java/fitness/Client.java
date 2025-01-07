@@ -1,8 +1,5 @@
 package fitness;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Client {
 	private String userName;
 	private String password;
