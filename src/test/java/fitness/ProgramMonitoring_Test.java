@@ -1,5 +1,5 @@
 package fitness;
-
+import org.junit.Test;
 import static org.junit.Assert.assertTrue;
 
 import java.io.FileNotFoundException;
