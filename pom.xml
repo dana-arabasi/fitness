@@ -7,7 +7,7 @@
   <version>0.0.1-SNAPSHOT</version>
 
     <dependencies>
-        <!-- Cucumber Dependencies -->
+        <!-- Add your dependencies here -->
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-java</artifactId>
@@ -24,20 +24,6 @@
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-picocontainer</artifactId>
             <version>7.18.1</version>
-        </dependency>
-
-        <!-- JUnit Dependencies -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>5.8.2</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.8.2</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -60,39 +46,13 @@
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.12</version>
                 <executions>
-                    <!-- إعداد JaCoCo لجمع التغطية -->
                     <execution>
-                        <id>prepare-agent</id>
                         <goals>
                             <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <!-- إعداد التقرير بصيغة XML لـ SonarCloud -->
-                    <execution>
-                        <id>report</id>
-                        <goals>
                             <goal>report</goal>
                         </goals>
                     </execution>
-                    <execution>
-                        <id>report-aggregate</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>report-aggregate</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.directory}/jacoco-aggregate</outputDirectory>
-                            <reports>
-                                <report>xml</report>
-                            </reports>
-                        </configuration>
-                    </execution>
                 </executions>
-                <configuration>
-                    <destFile>${project.build.directory}/jacoco.exec</destFile>
-                    <dataFile>${project.build.directory}/jacoco.exec</dataFile>
-                    <outputDirectory>${project.build.directory}/site/jacoco</outputDirectory>
-                </configuration>
             </plugin>
 
             <!-- Surefire Plugin -->
@@ -101,25 +61,13 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <testFailureIgnore>true</testFailureIgnore>
-                    <includes>
-                        <include>**/*Test.java</include>
-                    </includes>
                 </configuration>
             </plugin>
         </plugins>
     </build>
 
     <properties>
-        <!-- إعدادات SonarCloud -->
         <sonar.organization>fitness2025</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-        <sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
-        <sonar.sources>src/main/java</sonar.sources>
-        <sonar.tests>src/test/java</sonar.tests>
-        <sonar.test.inclusions>*/*Test.java,*/*Tests.java</sonar.test.inclusions>
-        <sonar.coverage.exclusions>*/src/test/, */resources/**</sonar.coverage.exclusions>
-        <sonar.junit.reportPaths>${project.build.directory}/surefire-reports</sonar.junit.reportPaths>
-        <sonar.inclusions>*/.java</sonar.inclusions>
-        <sonar.coverage.branch>true</sonar.coverage.branch>
     </properties>
 </project>
