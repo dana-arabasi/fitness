@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
 
 public class ContentManagement {
 	private static final String BASE_PATH = "files"; // Use relative path
-    private static final String RECIPES_FILE_PATH = Paths.get(BASE_PATH, "recipes.txt").toString();
+    private static final String RECIPES_FILE_PATH = Paths.get(BASE_PATH, "programs.txt").toString();
     private static final String FEEDBACK_FILE_PATH = Paths.get(BASE_PATH, "feedback.txt").toString();
     private static final String RESPONSE_FILE_PATH = Paths.get(BASE_PATH, "responseFeedback.txt").toString();
 
