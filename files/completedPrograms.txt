@@ -1,0 +1,2 @@
+lose wight program,3 weeks,Intermediate,weight loss,path/vedio.mp4,path/image.jpg,path/doc.pdf,20,online,sunday/monday,10:00 AM-12:00 AM
+health,3 weeks,Beginner,flexibility,path/vidio.mp4,,,80,online,sunday/monday,11:00am-12:00pm
