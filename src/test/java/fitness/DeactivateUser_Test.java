@@ -1,7 +1,7 @@
 package fitness;
 
 import static org.junit.Assert.*;
-
+import org.junit.Test;
 import org.junit.Test;
 
 import io.cucumber.java.en.When;
