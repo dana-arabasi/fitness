@@ -1,7 +1,6 @@
 package fitness;
 
 import static org.junit.Assert.assertTrue;
-import org.junit.Test;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -14,62 +13,57 @@ public class InstructorRegistrations_Test {
 		this.app=app;
 		
 	}
-	@Test
+
 	@When("I view the list of pending instructor registrations")
 	public void i_view_the_list_of_pending_instructor_registrations() {
 	   app.viewAllInstructors();
-		assertTrue(true);
 	}
-	@Test
+
 	@Then("I should see a list of all pending instructor registrations")
 	public void i_should_see_a_list_of_all_pending_instructor_registrations() {
 		 app.viewAllInstructors();
-		assertTrue(true);
 	}
-	@Test
+
 	@Then("each pending registration should display the instructor's name and email")
 	public void each_pending_registration_should_display_the_instructor_s_name_and_email() {
 		 app.viewAllInstructors();
-		assertTrue(true);
 	}
 
-	@Test
+	
 	@Given("the instructor with name {string} is in the pending registrations list")
 	public void the_instructor_with_name_is_in_the_pending_registrations_list(String name) {
+		app.SignUpUser(name, "000", "Instructor");
 		  boolean isInstrutorInList=app.isInstructorInList(name);
 		 // assertTrue(isInstrutorInList);
 		assertTrue(true);
 		    
 	}
-	@Test
+
 	@When("I select the instructor with name {string} to approve")
 	public void i_select_the_instructor_with_name_to_approve(String name) {
-		 app.approveInsructor(name);
-		assertTrue(true);
+		 app.approveInstructor(name);
 	}
 
-	@Test
+
 	@When("I confirm the approval")
 	public void i_confirm_the_approval() {
 	    assertTrue(true);
 	}
-	@Test
 	@Then("the instructor registration with name {string} should be approved successfully")
 	public void the_instructor_registration_with_name_should_be_approved_successfully(String string) {
 		assertTrue(true);
 	}
-	@Test
+
 	@When("I select the instructor with name {string} to reject")
 	public void i_select_the_instructor_with_name_to_reject(String name) {
+		app.SignUpUser(name, "000", "Instructor");
 	    app.rejectInstructor(name);
-		assertTrue(true);
 	}
-	@Test
+
 	@When("I confirmVthe rejection")
 	public void i_confirm_vthe_rejection() {
 		assertTrue(true);
 	}
-	@Test
 	@Then("the instructor with name {string} registration should be rejected")
 	public void the_instructor_with_name_registration_should_be_rejected(String string) {
 		assertTrue(true);
