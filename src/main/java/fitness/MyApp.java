@@ -81,7 +81,7 @@ public class MyApp {
 	   public MyApp() throws FileNotFoundException, IOException {
 	        super();
 	        this.client = new Client();
-	        this.client.setApp(this);
+	  
 	        contentmanagement = new ContentManagement();
 	        this. usermessageHistory = new ArrayList<>();
 	        this.clients = new ArrayList<>();
