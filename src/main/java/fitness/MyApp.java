@@ -27,7 +27,7 @@ public class MyApp {
 	private static final String FILE_InstructorReg= "files/instructorsreg.txt";
     private static final String  loginHistoryFile= "files/login.txt";
     private String filePath = "";
-	private boolean boolisUserLoggedIn;
+	
 	 private boolean isSignedUp;
 	private boolean AdminLoggedIn;
 	public ArrayList<Admin> admin;
@@ -35,8 +35,6 @@ public class MyApp {
 	public ArrayList<Instructor> instructorsreg;
 	public ArrayList<Client>clients;
 	private String loggedName;
-	private String loggedPassword;
-	private String ROLE;
 	private boolean UserLoggedIn;
 	private boolean userDashOpen;
 	public ArrayList<String> activeprograms;
@@ -198,8 +196,7 @@ public class MyApp {
 		        if (found) {
 		            openUserDash();
 		            loggedName = username;
-		            ROLE = role;
-		            loggedPassword = password;
+		           
 		        }
 			
 		}
@@ -213,7 +210,7 @@ public class MyApp {
 	private boolean loginAdmin(String username, String password) {
 		 for (Admin a : admin) {
 	            if (a.getUsername().equals(username) && a.getPassword().equals(password)) {
-	            	boolisUserLoggedIn = true;
+	            	
 	                AdminLoggedIn = true;
 	                return true;
 	            }
@@ -224,7 +221,7 @@ public class MyApp {
 	private boolean loginInstructor(String username, String password) {
 		for (Instructor a : instructors) {
             if (a.getUsername().equals(username) && a.getPassword().equals(password)) {
-            	boolisUserLoggedIn = true;
+            	
                 InstructorLoggedIn = true;
                 return true;
             }
@@ -235,7 +232,7 @@ public class MyApp {
 	private boolean loginClient(String username, String password) {
 		for (Client a : clients) {
             if (a.getUsername().equals(username) && a.getPassword().equals(password)) {
-            	boolisUserLoggedIn = true;
+            	
                 clientLoggedIn = true;
                 return true;
             }
