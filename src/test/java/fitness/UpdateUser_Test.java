@@ -1,6 +1,6 @@
 package fitness;
 
-
+import org.junit.Test;
 import static org.junit.Assert.assertTrue;
 
 import io.cucumber.java.en.When;
