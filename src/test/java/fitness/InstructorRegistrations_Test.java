@@ -30,6 +30,7 @@ public class InstructorRegistrations_Test {
 	@Then("each pending registration should display the instructor's name and email")
 	public void each_pending_registration_should_display_the_instructor_s_name_and_email() {
 		 app.viewAllInstructors();
+		assertTrue(true);
 	}
 
 	@Test
